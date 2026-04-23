@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Randekhi Hotels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:       '#0a0f1e',
+            dark:       '#0d1528',
+            mid:        '#131f3a',
+            'blue-dark':'#1a2a4a',
+            'blue-mid': '#1e3560',
+            'blue-acc': '#2a4a80',
+            'grey-dark':'#1c1c2e',
+            'grey-mid': '#2a2a3e',
+            'grey-light':'#6b7a99',
+            gold:       '#c9a84c',
+            'gold-light':'#e8c97e',
+            'gold-glow':'#f0d896',
+            muted:      '#8a9bbf',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans:  ['"DM Sans"', 'sans-serif'],
+          },
+          backgroundImage: {
+            'hero-grad':    'linear-gradient(135deg, #0a0f1e 0%, #0d1528 30%, #131f3a 60%, #1a2a4a 80%, #0f1a30 100%)',
+            'gold-grad':    'linear-gradient(135deg, #c9a84c, #e8c97e)',
+            'gold-grad2':   'linear-gradient(135deg, #c9a84c, #f0d896)',
+            'gold-text':    'linear-gradient(135deg, #c9a84c, #f0d896, #ffffff)',
+            'rooms-grad':   'linear-gradient(160deg, #0d1528 0%, #131f3a 50%, #0d1528 100%)',
+            'news-grad':    'linear-gradient(160deg, #0a0f1e 0%, #1c1c2e 50%, #0a0f1e 100%)',
+            'awards-grad':  'linear-gradient(135deg, #131f3a, #1a2a4a, #0d1528)',
+            'contact-grad': 'linear-gradient(160deg, #0d1528, #0a0f1e)',
+            'card-grad':    'linear-gradient(145deg, #1a2a4a, #1c1c2e)',
+            'news-card-grad':'linear-gradient(145deg, rgba(26,42,74,0.5), rgba(28,28,46,0.6))',
+            'form-grad':    'linear-gradient(145deg, rgba(26,42,74,0.4), rgba(13,21,40,0.6))',
+            'stats-grad':   'linear-gradient(135deg, rgba(26,42,74,0.6), rgba(19,31,58,0.8))',
+            'room-deluxe':  'linear-gradient(135deg, #1a2a4a, #2a3d6b, #1e3560)',
+            'room-suite':   'linear-gradient(135deg, #1c1a2e, #2d2050, #1a1530)',
+            'room-pres':    'linear-gradient(135deg, #1a2a1a, #2a4030, #1e3022)',
+            'news-vis':     'linear-gradient(135deg, #1a2a4a, #2a4a80)',
+            'contact-icon': 'linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05))',
+            'badge-grad':   'linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.05))',
+          },
+          keyframes: {
+            scrollAnim: {
+              '0%,100%': { opacity:'0.3', transform:'scaleY(0.8)' },
+              '50%':     { opacity:'1',   transform:'scaleY(1)'   },
+            },
+            fadeUp: {
+              '0%':   { opacity:'0', transform:'translateY(20px)' },
+              '100%': { opacity:'1', transform:'translateY(0)'    },
+            },
+          },
+          animation: {
+            'scroll': 'scrollAnim 2s ease-in-out infinite',
+          },
+          boxShadow: {
+            'gold-sm': '0 0 20px rgba(201,168,76,0.4)',
+            'gold-md': '0 8px 30px rgba(201,168,76,0.35)',
+            'gold-lg': '0 8px 30px rgba(201,168,76,0.3)',
+            'card':    '0 20px 60px rgba(0,0,0,0.4)',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; }
+
+    /* Gold gradient text */
+    .text-gold-grad {
+      background: linear-gradient(135deg, #c9a84c, #f0d896);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .text-hero-grad {
+      background: linear-gradient(135deg, #c9a84c, #f0d896, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero background layers */
+    .hero-bg {
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(26,42,74,0.8) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(42,74,128,0.4) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0f1e 0%, #0d1528 30%, #131f3a 60%, #1a2a4a 80%, #0f1a30 100%);
+    }
+    .hero-grid-bg {
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Fade-in on scroll */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Form inputs dark styling */
+    .dark-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      color: #ffffff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .dark-input::placeholder { color: #6b7a99; }
+    .dark-input:focus { border-color: rgba(201,168,76,0.4); }
+    textarea.dark-input { resize: vertical; min-height: 100px; }
+
+    /* Scroll indicator line */
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(180deg, #c9a84c, transparent);
+      animation: scrollAnim 2s ease-in-out infinite;
+    }
+    @keyframes scrollAnim {
+      0%,100% { opacity:0.3; transform:scaleY(0.8); }
+      50%      { opacity:1;   transform:scaleY(1);   }
+    }
+
+    /* Gold divider */
+    .gold-divider {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, #c9a84c, #f0d896);
+      border-radius: 2px;
+      margin: 1.2rem 0;
+    }
+    .gold-divider-center { margin: 1rem auto; }
+
+    .gold-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23c9a84c' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+}
+
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.12);
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,15,30,0.1), rgba(10,15,30,0.8));
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-text {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.4s;
+}
+
+.gallery-item:hover .gallery-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+  </style>
+</head>
+<body class="bg-navy text-white overflow-x-hidden">
+
+  <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50 px-12 py-5"
+     style="background:linear-gradient(180deg,rgba(10,15,30,0.95) 0%,rgba(10,15,30,0) 100%);backdrop-filter:blur(5px);">
+
+  <div class="flex items-center justify-between">
+
+    <!-- LOGO: replace the src with your actual logo file path -->
+    <a href="#">
+      <img src="assest/randekhi.png" alt="Randekhị Hotels" class="h-12 w-auto object-contain"/>
+    </a>
+
+    <!-- DESKTOP LINKS -->
+    <ul class="hidden md:flex gap-8 list-none">
+      <li><a href="#"       class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light">Home</a></li>
+      <li><a href="#about"  class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light">About Us</a></li>
+      <li><a href="#contact" class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light">Reservation</a></li>
+      <li><a href="#rooms"  class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light">Rooms</a></li>
+      <li><a href="#contact" class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light">Contact Us</a></li>
+    </ul>
+
+    <!-- DESKTOP BOOK NOW -->
+    <a href="#contact"
+       class="hidden md:inline-block bg-gold-grad text-navy px-6 py-2 rounded-full text-sm font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-sm hover:-translate-y-px">
+      Book Now
+    </a>
+
+    <!-- HAMBURGER BUTTON (mobile only) -->
+    <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-none"
+            onclick="toggleMenu()">
+      <span id="bar1" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      <span id="bar2" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      <span id="bar3" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+    </button>
+
+  </div>
+
+  <!-- MOBILE MENU (hidden by default) -->
+  <div id="mobile-menu"
+       class="md:hidden overflow-hidden transition-all duration-300 max-h-0"
+       style="background:rgba(10,15,30,0.97);border-top:1px solid rgba(201,168,76,0.1);margin-top:0.5rem;border-radius:12px;">
+    <ul class="list-none flex flex-col px-6 py-4 gap-4">
+      <li><a href="#"        class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light block py-1">Home</a></li>
+      <li><a href="#"   class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light block py-1">About Us</a></li>
+      <li><a href="#" class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light block py-1">Reservation</a></li>
+      <li><a href="#"   class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light block py-1">Rooms</a></li>
+      <li><a href="#" class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-gold-light block py-1">Contact Us</a></li>
+      <li>
+        <a href="#"
+           class="inline-block bg-gold-grad text-navy px-6 py-2 rounded-full text-sm font-medium no-underline tracking-wide mt-2">
+          Book Now
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</nav>
+
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div class="hero-bg absolute inset-0"></div>
+    <div class="hero-grid-bg absolute inset-0"></div>
+    <!-- glow orb -->
+    <div class="absolute w-[600px] h-[600px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+         style="background:radial-gradient(circle,rgba(42,74,128,0.3) 0%,transparent 70%)"></div>
+
+    <div class="relative text-center px-4 max-w-3xl">
+      <!-- badge -->
+      <div class="inline-block mt-8 mb-6 px-5 py-1.5 rounded-full text-gold-light text-xs tracking-widest uppercase"
+           style="background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.3);">
+        ✦ World Luxury Hotel Awards Nominee
+      </div>
+      <h1 class="font-serif font-semibold leading-tight mb-5" style="font-size:clamp(2.8rem,6vw,5rem);">
+        Where Luxury<br/><span class="text-hero-grad">Meets Serenity</span>
+      </h1>
+      <p class="text-muted font-light text-lg leading-relaxed max-w-lg mx-auto mb-10">
+        Experience unparalleled elegance in every detail. From our award-winning suites to world-class dining, we redefine what it means to stay in true luxury.
+      </p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="#contact"
+           class="bg-gold-grad text-navy px-9 py-3.5 rounded-full text-sm font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-md hover:-translate-y-0.5">
+          Book Your Stay
+        </a>
+        <a href="#rooms"
+           class="text-white px-9 py-3.5 rounded-full text-sm font-light no-underline transition-all duration-300 hover:border-gold hover:text-gold-light hover:-translate-y-0.5"
+           style="border:1px solid rgba(255,255,255,0.25);">
+          Explore Rooms
+        </a>
+      </div>
+    </div>
+
+    <!-- scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted text-xs tracking-widest uppercase">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════ SLIDESHOW ═══════════════════════════════ -->
+<section class="relative w-full overflow-hidden" style="height:600px;">
+
+  <!-- SLIDES -->
+  <div id="slideshow" class="relative w-full h-full">
+
+    <!-- Slide 1 -->
+    <div class="slide absolute inset-0 transition-all duration-1000 opacity-0"
+         style="background:linear-gradient(135deg,#0a0f1e,#1a2a4a);">
+      <img src="assest/slide04.jpg" alt="Slide 1"
+           class="absolute inset-0 w-full h-full object-cover"/>
+      <div class="absolute inset-0" style="background:linear-gradient(135deg,rgba(10,15,30,0.75) 0%,rgba(26,42,74,0.5) 50%,rgba(10,15,30,0.8) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-center px-16 md:px-28 translate-y-8 opacity-0 transition-all duration-700 delay-300">
+        <div class="text-gold text-xs tracking-widest uppercase mb-3">✦ Luxury Redefined</div>
+        <h2 class="font-serif font-semibold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.8rem);max-width:600px;">
+          The Finest <span class="text-hero-grad">Deluxe Suites</span><br/>In The Heart of Benin
+        </h2>
+        <p class="text-muted font-light leading-relaxed mb-8" style="max-width:460px;font-size:1rem;">
+          Wake up to breathtaking city views, wrapped in premium bedding and surrounded by elegance crafted for those who deserve only the best.
+        </p>
+        <div>
+          <a href="#rooms" class="bg-gold-grad text-navy px-8 py-3 rounded-full text-sm font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-md">
+            Explore Rooms
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide absolute inset-0 transition-all duration-1000 opacity-0"
+         style="background:linear-gradient(135deg,#0d1528,#1c1c2e);">
+      <img src="assest/slidepool-night.jpg" alt="Slide 2"
+           class="absolute inset-0 w-full h-full object-cover"/>
+      <div class="absolute inset-0" style="background:linear-gradient(to right,rgba(10,15,30,0.85) 0%,rgba(10,15,30,0.3) 60%,rgba(10,15,30,0.7) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-center items-center text-center px-8 translate-y-8 opacity-0 transition-all duration-700 delay-300">
+        <div class="text-gold text-xs tracking-widest uppercase mb-3">✦ Gold Standard</div>
+        <h2 class="font-serif font-semibold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.8rem);max-width:650px;">
+          Where Every Detail<br/>Speaks <span class="text-hero-grad">Pure Gold</span>
+        </h2>
+        <p class="text-muted font-light leading-relaxed mb-8" style="max-width:480px;font-size:1rem;">
+          From butler service to panoramic lounges, the Gold Standard suite is a statement of living that few will ever know — and none will ever forget.
+        </p>
+        <div>
+          <a href="#contact" class="bg-gold-grad text-navy px-8 py-3 rounded-full text-sm font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-md">
+            Book Your Stay
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide absolute inset-0 transition-all duration-1000 opacity-0"
+         style="background:linear-gradient(135deg,#131f3a,#0a0f1e);">
+      <img src="assest/slide-pool.jpg" alt="Slide 3"
+           class="absolute inset-0 w-full h-full object-cover"/>
+      <div class="absolute inset-0" style="background:linear-gradient(to left,rgba(10,15,30,0.85) 0%,rgba(10,15,30,0.3) 60%,rgba(10,15,30,0.7) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-center items-end px-16 md:px-28 translate-y-8 opacity-0 transition-all duration-700 delay-300" style="text-align:right;">
+        <div class="text-gold text-xs tracking-widest uppercase mb-3">✦ Premium Experience</div>
+        <h2 class="font-serif font-semibold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.8rem);max-width:600px;">
+          World-Class Service<br/>At Your <span class="text-hero-grad">Fingertips</span>
+        </h2>
+        <p class="text-muted font-light leading-relaxed mb-8" style="max-width:460px;font-size:1rem;">
+          A dedicated team anticipates your every need. Randekhi's signature service turns every visit into a memory you will carry forever.
+        </p>
+        <div>
+          <a href="#contact" class="bg-gold-grad text-navy px-8 py-3 rounded-full text-sm font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-md">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide absolute inset-0 transition-all duration-1000 opacity-0"
+         style="background:linear-gradient(135deg,#1a2a4a,#0d1528);">
+      <img src="assest/slide05.jpg" alt="Slide 4"
+           class="absolute inset-0 w-full h-full object-cover"/>
+      <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(10,15,30,0.4) 0%,rgba(10,15,30,0.85) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-end px-16 md:px-28 pb-16 translate-y-8 opacity-0 transition-all duration-700 delay-300">
+        <div class="text-gold text-xs tracking-widest uppercase mb-3">✦ Events & Celebrations</div>
+        <h2 class="font-serif font-semibold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.8rem);max-width:650px;">
+          Unforgettable Nights<br/>At <span class="text-hero-grad">Randekhi</span>
+        </h2>
+        <p class="text-muted font-light leading-relaxed mb-8" style="max-width:480px;font-size:1rem;">
+          From exclusive pool parties to intimate celebrations, Randekhi is the backdrop to the moments that define your story.
+        </p>
+        <div>
+          <a href="#news" class="bg-gold-grad text-navy px-8 py-3 rounded-full text-sm font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-md">
+            See Events
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DOTS -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+    <button onclick="goToSlide(0)" class="slide-dot w-2 h-2 rounded-full transition-all duration-300 cursor-pointer border-none"
+            style="background:rgba(201,168,76,0.4);"></button>
+    <button onclick="goToSlide(1)" class="slide-dot w-2 h-2 rounded-full transition-all duration-300 cursor-pointer border-none"
+            style="background:rgba(201,168,76,0.4);"></button>
+    <button onclick="goToSlide(2)" class="slide-dot w-2 h-2 rounded-full transition-all duration-300 cursor-pointer border-none"
+            style="background:rgba(201,168,76,0.4);"></button>
+    <button onclick="goToSlide(3)" class="slide-dot w-2 h-2 rounded-full transition-all duration-300 cursor-pointer border-none"
+            style="background:rgba(201,168,76,0.4);"></button>
+  </div>
+
+  <!-- ARROWS -->
+  <button onclick="prevSlide()" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer border-none"
+          style="background:rgba(10,15,30,0.6);border:1px solid rgba(201,168,76,0.3);"
+          onmouseenter="this.style.background='rgba(201,168,76,0.15)';this.style.borderColor='rgba(201,168,76,0.6)'"
+          onmouseleave="this.style.background='rgba(10,15,30,0.6)';this.style.borderColor='rgba(201,168,76,0.3)'">
+    <i class="fa-solid fa-chevron-left text-gold-light text-xs"></i>
+  </button>
+  <button onclick="nextSlide()" class="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer border-none"
+          style="background:rgba(10,15,30,0.6);border:1px solid rgba(201,168,76,0.3);"
+          onmouseenter="this.style.background='rgba(201,168,76,0.15)';this.style.borderColor='rgba(201,168,76,0.6)'"
+          onmouseleave="this.style.background='rgba(10,15,30,0.6)';this.style.borderColor='rgba(201,168,76,0.3)'">
+    <i class="fa-solid fa-chevron-right text-gold-light text-xs"></i>
+  </button>
+
+</section>
+
+  <!-- ═══════════════════════════════ STATS ═══════════════════════════════ -->
+  <div class="py-12 px-12" style="background:linear-gradient(135deg,rgba(26,42,74,0.6),rgba(19,31,58,0.8));border-top:1px solid rgba(201,168,76,0.1);border-bottom:1px solid rgba(201,168,76,0.1);">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto text-center">
+      <div><div class="font-serif text-4xl font-semibold text-gold-grad">10+</div><div class="text-muted text-xs tracking-wider mt-1">Years of Excellence</div></div>
+      <div><div class="font-serif text-4xl font-semibold text-gold-grad">4.9★</div><div class="text-muted text-xs tracking-wider mt-1">Guest Rating</div></div>
+      <div><div class="font-serif text-4xl font-semibold text-gold-grad">200+</div><div class="text-muted text-xs tracking-wider mt-1">Luxury Rooms</div></div>
+      <div><div class="font-serif text-4xl font-semibold text-gold-grad">12</div><div class="text-muted text-xs tracking-wider mt-1">Awards Won</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ ROOMS ═══════════════════════════════ -->
+  <section id="rooms" class="fade-in py-20 px-12" style="background:linear-gradient(160deg,#0d1528 0%,#131f3a 50%,#0d1528 100%);">
+    <div class="flex justify-between items-end mb-12 flex-wrap gap-4">
+      <div>
+        <div class="text-gold text-xs tracking-widest uppercase mb-2">Accommodation</div>
+        <h2 class="font-serif font-medium leading-tight mb-0" style="font-size:clamp(1.8rem,3vw,2.8rem);">Our Finest Rooms & Suites</h2>
+        <div class="gold-divider"></div>
+      </div>
+      <p class="text-muted text-sm leading-relaxed max-w-sm">Each room is a masterpiece of comfort, designed for those who expect nothing but the best.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Deluxe -->
+      <div class="rounded-[20px] overflow-hidden border transition-all duration-400 cursor-pointer hover:-translate-y-1.5 hover:shadow-card group"
+           style="background:linear-gradient(145deg,#1a2a4a,#1c1c2e);border-color:rgba(201,168,76,0.12);"
+           onmouseenter="this.style.borderColor='rgba(201,168,76,0.35)'"
+           onmouseleave="this.style.borderColor='rgba(201,168,76,0.12)'">
+        <div class="relative h-48 overflow-hidden" style="background:linear-gradient(135deg,#1a2a4a,#2a3d6b,#1e3560);">
+  <img src="assest/deluxe-suite-room-2-700x400.jpg" alt="Deluxe Suite" class="w-full h-full object-cover"/>
+          <div class="absolute top-4 right-4 text-gold-light text-xs px-3 py-1 rounded-full tracking-wider"
+               style="background:rgba(10,15,30,0.75);border:1px solid rgba(201,168,76,0.6);backdrop-filter:blur(4px);">Popular</div>
+        </div>
+        <div class="p-6">
+          <div class="font-serif text-lg mb-1">Deluxe Suite</div>
+          <p class="text-muted text-xs leading-relaxed mb-4">Spacious comfort with city views, premium bedding, and modern amenities crafted for your relaxation.</p>
+          <div class="flex items-center justify-between">
+            <div class="text-gold-light text-sm"><span class="font-serif text-xl text-gold-glow">₦45,000</span> /night</div>
+            <button class="text-gold-light text-xs px-4 py-1.5 rounded-full transition-all duration-300 hover:border-gold"
+                    style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);">View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suite -->
+      <div class="rounded-[20px] overflow-hidden border transition-all duration-400 cursor-pointer hover:-translate-y-1.5 hover:shadow-card"
+           style="background:linear-gradient(145deg,#1a2a4a,#1c1c2e);border-color:rgba(201,168,76,0.12);"
+           onmouseenter="this.style.borderColor='rgba(201,168,76,0.35)'"
+           onmouseleave="this.style.borderColor='rgba(201,168,76,0.12)'">
+        <div class="relative h-48 overflow-hidden" style="background:linear-gradient(135deg,#1c1a2e,#2d2050,#1a1530);">
+  <img src="assest/gold-standard2-700x400.jpg" alt="Gold Standard Suite" class="w-full h-full object-cover"/>
+          <div class="absolute top-4 right-4 text-gold-light text-xs px-3 py-1 rounded-full tracking-wider"
+               style="background:rgba(10,15,30,0.75);border:1px solid rgba(201,168,76,0.6);backdrop-filter:blur(4px);">Best Value</div>
+        </div>
+        <div class="p-6">
+          <div class="font-serif text-lg mb-1">Gold Standard</div>
+          <p class="text-muted text-xs leading-relaxed mb-4">A grand living space with a private lounge, butler service, and panoramic views of the horizon.</p>
+          <div class="flex items-center justify-between">
+            <div class="text-gold-light text-sm"><span class="font-serif text-xl text-gold-glow">₦85,000</span> /night</div>
+            <button class="text-gold-light text-xs px-4 py-1.5 rounded-full transition-all duration-300 hover:border-gold"
+                    style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);">View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presidential -->
+      <div class="rounded-[20px] overflow-hidden border transition-all duration-400 cursor-pointer hover:-translate-y-1.5 hover:shadow-card"
+           style="background:linear-gradient(145deg,#1a2a4a,#1c1c2e);border-color:rgba(201,168,76,0.12);"
+           onmouseenter="this.style.borderColor='rgba(201,168,76,0.35)'"
+           onmouseleave="this.style.borderColor='rgba(201,168,76,0.12)'">
+        <div class="relative h-48 overflow-hidden" style="background:linear-gradient(135deg,#1a2a1a,#2a4030,#1e3022);">
+  <img src="assest/column-service-23.jpg" alt="Gold Premium Suite" class="w-full h-full object-cover"/>
+          <div class="absolute top-4 right-4 text-gold-light text-xs px-3 py-1 rounded-full tracking-wider"
+               style="background:rgba(10,15,30,0.75);border:1px solid rgba(201,168,76,0.6);backdrop-filter:blur(4px);">Premium</div>
+        </div>
+        <div class="p-6">
+          <div class="font-serif text-lg mb-1">Gold Premium</div>
+          <p class="text-muted text-xs leading-relaxed mb-4">The pinnacle of luxury. A full floor of opulence with a private pool, chef, and dedicated staff.</p>
+          <div class="flex items-center justify-between">
+            <div class="text-gold-light text-sm"><span class="font-serif text-xl text-gold-glow">₦200,000</span> /night</div>
+            <button class="text-gold-light text-xs px-4 py-1.5 rounded-full transition-all duration-300 hover:border-gold"
+                    style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);">View Details</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+     <!-- SEE MORE ROOMS BUTTON -->
+    <div class="flex justify-center mt-12">
+      <a href="#"
+         class="relative inline-block px-10 py-4 rounded-full font-medium text-sm tracking-widest uppercase no-underline transition-all duration-300 hover:-translate-y-1"
+         style="background:linear-gradient(135deg,#c9a84c,#f0d896);color:#0a0f1e;box-shadow:0 0 20px rgba(201,168,76,0.4),0 0 60px rgba(201,168,76,0.15);"
+         onmouseenter="this.style.boxShadow='0 0 35px rgba(201,168,76,0.7),0 0 80px rgba(201,168,76,0.3)'"
+         onmouseleave="this.style.boxShadow='0 0 20px rgba(201,168,76,0.4),0 0 60px rgba(201,168,76,0.15)'">
+        <!-- glow ring -->
+        <span class="absolute inset-0 rounded-full pointer-events-none"
+              style="border:1px solid rgba(201,168,76,0.6);animation:pulseRing 2s ease-in-out infinite;"></span>
+        ✦ See More Rooms
+      </a>
+    </div>
+
+    <style>
+      @keyframes pulseRing {
+        0%,100% { transform:scale(1);   opacity:0.6; }
+        50%      { transform:scale(1.06); opacity:1;   }
+      }
+    </style>
+  </section>
+
+  <!-- ═══════════════════════════════ NEWS ═══════════════════════════════ -->
+  <section id="news" class="fade-in py-20 px-12" style="background:linear-gradient(160deg,#0a0f1e 0%,#1c1c2e 50%,#0a0f1e 100%);">
+    <div class="text-gold text-xs tracking-widest uppercase mb-2">Latest Updates</div>
+    <h2 class="font-serif font-medium leading-tight" style="font-size:clamp(1.8rem,3vw,2.8rem);">Recent News & Events</h2>
+    <div class="gold-divider"></div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+
+      <!-- Featured -->
+      <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center rounded-2xl p-7 border transition-all duration-300 cursor-pointer hover:-translate-y-1"
+           style="background:linear-gradient(145deg,rgba(26,42,74,0.5),rgba(28,28,46,0.6));border-color:rgba(255,255,255,0.07);"
+           onmouseenter="this.style.borderColor='rgba(201,168,76,0.25)'"
+           onmouseleave="this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div>
+          <div class="text-gold text-xs tracking-widest uppercase mb-3">31 OCT • Jokers Exclusive Pool Party</div>
+          <div class="font-serif text-2xl leading-snug mb-3">Jokers Exclusive Pool Party Returns This Summer</div>
+          <p class="text-muted text-xs leading-relaxed mb-5">Joker Exclusive Pool Party with Patoranking, Lil’ Kesh and Vector, EFEX, Shawn Pee, Leroy, Babiestai, Jaytunes, Balzee and Roco. Hype men, Mc FreshBliss, Emperor KC and the Mighty Spanky!!!! Come have fun with us in a new poolside experience with games, thrills, grills and luxurious sexy people!</p>
+          <a href="#contact" class="bg-gold-grad text-navy px-6 py-2.5 rounded-full text-xs font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-md">Get Tickets</a>
+          <a href="#" class="inline-block mt-3 text-gold-light text-xs tracking-widest uppercase no-underline transition-colors duration-300 hover:text-gold-glow ml-5">Read More →</a>
+        </div>
+        <div class="h-44 rounded-xl overflow-hidden" style="background:linear-gradient(135deg,#1a2a4a,#2a4a80);">
+  <img src="assest/jeep.jpg" alt="Pool Party" class="w-full h-full object-cover"/>
+</div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="rounded-2xl p-7 border transition-all duration-300 cursor-pointer hover:-translate-y-1"
+           style="background:linear-gradient(145deg,rgba(26,42,74,0.5),rgba(28,28,46,0.6));border-color:rgba(255,255,255,0.07);"
+           onmouseenter="this.style.borderColor='rgba(201,168,76,0.25)'"
+           onmouseleave="this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="text-gold text-xs tracking-widest uppercase mb-3">13 DEC</div>
+        <div class="font-serif text-lg leading-snug mb-2">Ember Discounts 2015</div>
+        <p class="text-muted text-xs leading-relaxed">Ember Discounts are here again, get 30% discount on all rooms from September 1st 2015 till February 29th 2016. can’t wait to accommodate and treat you, see you here…</p>
+
+        <a href="#" class="inline-block mt-3 text-gold-light text-xs tracking-widest uppercase no-underline transition-colors duration-300 hover:text-gold-glow">Read More →</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="rounded-2xl p-7 border transition-all duration-300 cursor-pointer hover:-translate-y-1"
+           style="background:linear-gradient(145deg,rgba(26,42,74,0.5),rgba(28,28,46,0.6));border-color:rgba(255,255,255,0.07);"
+           onmouseenter="this.style.borderColor='rgba(201,168,76,0.25)'"
+           onmouseleave="this.style.borderColor='rgba(255,255,255,0.07)'">
+        <div class="text-gold text-xs tracking-widest uppercase mb-3">12 SEPT • Event</div>
+        <div class="font-serif text-lg leading-snug mb-2">Bikini Splash Pool Party</div>
+        <p class="text-muted text-xs leading-relaxed">Firtst City Ent., Yakpa Gang Ent. and Club Joker in collaboration with Randekhi Royal Hotel presents Bikini Splash Pool Party with TEKNO.</p>
+
+        <a href="#" class="inline-block mt-3 text-gold-light text-xs tracking-widest uppercase no-underline transition-colors duration-300 hover:text-gold-glow">Read More →</a>
+      </div>
+
+    </div>
+
+
+    <div class="flex justify-center mt-12">
+  <a href="#"
+     class="relative inline-block px-10 py-4 rounded-full font-medium text-sm tracking-widest uppercase no-underline transition-all duration-300 hover:-translate-y-1"
+     style="background:linear-gradient(135deg,#c9a84c,#f0d896);color:#0a0f1e;box-shadow:0 0 20px rgba(201,168,76,0.4),0 0 60px rgba(201,168,76,0.15);"
+     onmouseenter="this.style.boxShadow='0 0 35px rgba(201,168,76,0.7),0 0 80px rgba(201,168,76,0.3)'"
+     onmouseleave="this.style.boxShadow='0 0 20px rgba(201,168,76,0.4),0 0 60px rgba(201,168,76,0.15)'">
+    <span class="absolute inset-0 rounded-full pointer-events-none"
+          style="border:1px solid rgba(201,168,76,0.6);animation:pulseRing 2s ease-in-out infinite;"></span>
+    ✦ Read All News
+  </a>
+</div>
+  </section>
+
+
+ <!-- ═══════════════════════════════ GALLERY ═══════════════════════════════ -->
+<section id="gallery" class="fade-in py-20 px-12" style="background:linear-gradient(160deg,#0a0f1e 0%,#131f3a 50%,#0a0f1e 100%);">
+
+  <!-- Header -->
+  <div class="text-center mb-14">
+    <div class="text-gold text-xs tracking-widest uppercase mb-2">Our Moments</div>
+    <h2 class="font-serif font-medium leading-tight" style="font-size:clamp(1.8rem,3vw,2.8rem);">
+      Gallery of <span class="text-hero-grad">Luxury</span>
+    </h2>
+    <div class="gold-divider gold-divider-center"></div>
+  </div>
+
+  <!-- MODERN GRID -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-5 auto-rows-[180px] md:auto-rows-[200px]">
+
+  <!-- BIG FEATURE -->
+  <div class="gallery-item col-span-2 row-span-2 group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g1.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Luxury Experience</div>
+  </div>
+
+  <!-- RIGHT TOP -->
+  <div class="gallery-item col-span-2 group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g2.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Poolside Escape</div> 
+  </div>
+
+  <!-- RIGHT BOTTOM -->
+  <div class="gallery-item col-span-2 group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g3.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Deluxe Comfort</div>
+  </div>
+
+  <!-- NEXT ROW (continues nicely) -->
+
+  <div class="gallery-item row-span-2 group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g4.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Executive Living</div> 
+  </div>
+
+  <div class="gallery-item group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g5.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Leisure & Luxury</div> 
+  </div>
+
+  <div class="gallery-item group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g6.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Timeless Elegance</div> 
+  </div>
+
+  <div class="gallery-item group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g7.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Moments of Luxury</div> 
+  </div>
+
+  <div class="gallery-item col-span-2 group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g8.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Curated Experience</div> 
+  </div>
+
+  <div class="gallery-item group relative overflow-hidden rounded-[20px]">
+    <img src="assest/g9.jpg" class="gallery-img"/>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-text">Where Comfort Meets Class</div> 
+  </div>
+
+
+</div>
+
+
+</section>
+
+  <!-- ═══════════════════════════════ AWARDS ═══════════════════════════════ -->
+  <section id="awards" class="fade-in py-20 px-12 text-center" style="background:linear-gradient(135deg,#131f3a,#1a2a4a,#0d1528);">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-5xl mb-6" style="filter:drop-shadow(0 0 20px rgba(201,168,76,0.4));">🏆</div>
+      <div class="text-gold text-xs tracking-widest uppercase mb-2">Recognition</div>
+      <h2 class="font-serif font-medium leading-tight" style="font-size:clamp(1.8rem,3vw,2.8rem);">World Luxury Hotel Awards</h2>
+      <div class="gold-divider gold-divider-center"></div>
+      <p class="text-muted text-sm leading-relaxed max-w-lg mx-auto mb-10">
+        The World Luxury Hotel Awards reward excellence within the luxury hotel industry. We have proudly been recognized year after year for our commitment to delivering extraordinary guest experiences.
+      </p>
+      <div class="flex gap-3 justify-center flex-wrap mb-10">
+        <div class="text-gold-light text-sm px-5 py-2.5 rounded-full tracking-wider" style="background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.25);">✦ Best Luxury Hotel</div>
+        <div class="text-gold-light text-sm px-5 py-2.5 rounded-full tracking-wider" style="background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.25);">✦ Excellence in Service</div>
+        <div class="text-gold-light text-sm px-5 py-2.5 rounded-full tracking-wider" style="background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.25);">✦ Top Dining Experience</div>
+        <div class="text-gold-light text-sm px-5 py-2.5 rounded-full tracking-wider" style="background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.25);">✦ Luxury Spa & Wellness</div>
+      </div>
+      <a href="#" class="inline-block bg-gold-grad text-navy px-10 py-3.5 rounded-full text-sm font-medium no-underline tracking-wide transition-all duration-300 hover:shadow-gold-md hover:-translate-y-0.5">
+        Nominate Us Today
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ CONTACT ═══════════════════════════════ -->
+  <section id="contact" class="fade-in py-20 px-12" style="background:linear-gradient(160deg,#0d1528,#0a0f1e);">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+
+      <!-- Left -->
+      <div>
+        <div class="text-gold text-xs tracking-widest uppercase mb-2">Get In Touch</div>
+        <h2 class="font-serif font-medium leading-tight mb-0" style="font-size:clamp(1.8rem,3vw,2.8rem);">Book Your Stay or Ask Us Anything</h2>
+        <div class="gold-divider"></div>
+        <p class="text-muted text-sm leading-relaxed max-w-sm mb-8">Our team is available 24/7 to help you plan the perfect stay. Reach out and we'll make it happen.</p>
+
+        <!-- Phone -->
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+               style="background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.2);">📞</div>
+          <div>
+            <p class="text-muted text-xs mb-0.5">Phone</p>
+            <a href="tel:08091729914" class="text-white text-sm no-underline transition-colors duration-300 hover:text-gold-light">0809 172 9914</a>
+          </div>
+        </div>
+        <!-- Email -->
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+               style="background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.2);">✉️</div>
+          <div>
+            <p class="text-muted text-xs mb-0.5">Email</p>
+            <a href="mailto:info@randekhihotels.com" class="text-white text-sm no-underline transition-colors duration-300 hover:text-gold-light">info@randekhihotels.com</a>
+          </div>
+        </div>
+        <!-- Location -->
+        <div class="flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+               style="background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.2);">📍</div>
+          <div>
+            <p class="text-muted text-xs mb-0.5">Location</p>
+            <span class="text-white text-sm">6 Uhenuyi St, Oka, Benin City 300251, Edo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — Form -->
+<div class="rounded-[20px] p-8" style="background:linear-gradient(145deg,rgba(26,42,74,0.4),rgba(13,21,40,0.6));border:1px solid rgba(201,168,76,0.1);">
+  
+  <!-- Name Row -->
+  <div class="grid grid-cols-2 gap-4 mb-5">
+    <input class="dark-input" type="text" placeholder="First Name"/>
+    <input class="dark-input" type="text" placeholder="Last Name"/>
+  </div>
+
+  <!-- Email -->
+  <div class="mb-5"><input class="dark-input" type="email" placeholder="Email Address"/></div>
+
+  <!-- Phone -->
+  <div class="mb-5"><input class="dark-input" type="tel" placeholder="Phone Number"/></div>
+
+  <!-- Hotel Branch Dropdown -->
+<div class="mb-5">
+  <select class="dark-input gold-select">
+    <option value="" disabled selected style="background:#0d1528;color:#6b7a99;">Select Hotel Branch</option>
+    <option value="gold-wing"  style="background:#0d1528;color:#ffffff;">Randekhi Gold Wing</option>
+    <option value="royal-wing" style="background:#0d1528;color:#ffffff;">Randekhi Royal Wing</option>
+  </select>
+</div>
+
+<!-- Check In / Check Out -->
+<div class="grid grid-cols-2 gap-4 mb-5">
+  <div>
+    <label class="block text-muted text-xs mb-1.5 tracking-wider uppercase">Check In</label>
+    <input class="dark-input" type="date"/>
+  </div>
+  <div>
+    <label class="block text-muted text-xs mb-1.5 tracking-wider uppercase">Check Out</label>
+    <input class="dark-input" type="date"/>
+  </div>
+</div>
+
+<!-- Adults / Children -->
+<div class="grid grid-cols-2 gap-4 mb-5">
+  <div>
+    <label class="block text-muted text-xs mb-1.5 tracking-wider uppercase">Adults</label>
+    <select class="dark-input gold-select">
+      <option style="background:#0d1528;">1 Adult</option>
+      <option style="background:#0d1528;">2 Adults</option>
+      <option style="background:#0d1528;">3 Adults</option>
+      <option style="background:#0d1528;">4 Adults</option>
+      <option style="background:#0d1528;">5+ Adults</option>
+    </select>
+  </div>
+  <div>
+    <label class="block text-muted text-xs mb-1.5 tracking-wider uppercase">Children</label>
+    <select class="dark-input gold-select">
+      <option style="background:#0d1528;">0 Children</option>
+      <option style="background:#0d1528;">1 Child</option>
+      <option style="background:#0d1528;">2 Children</option>
+      <option style="background:#0d1528;">3 Children</option>
+      <option style="background:#0d1528;">4+ Children</option>
+    </select>
+  </div>
+</div>
+  <!-- Special Requests -->
+  <div class="mb-5"><textarea class="dark-input" placeholder="Special requests or questions..."></textarea></div>
+
+  <!-- Submit -->
+  <button class="w-full bg-gold-grad text-navy py-3.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-300 hover:shadow-gold-lg hover:-translate-y-px border-none font-sans">
+    Book Now — It's Free to Enquire
+  </button>
+
+</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+  <footer class="bg-navy px-12 py-10" style="border-top:1px solid rgba(201,168,76,0.1);">
+    <div class="flex items-center justify-between flex-wrap gap-6 mb-6">
+      <div class="font-serif text-xl text-gold-grad">Randekhi Hotels</div>
+      <div class="flex gap-6">
+        <a href="#rooms"   class="text-muted text-sm no-underline transition-colors duration-300 hover:text-gold-light">Rooms</a>
+        <a href="#news"    class="text-muted text-sm no-underline transition-colors duration-300 hover:text-gold-light">News</a>
+        <a href="#awards"  class="text-muted text-sm no-underline transition-colors duration-300 hover:text-gold-light">Awards</a>
+        <a href="#contact" class="text-muted text-sm no-underline transition-colors duration-300 hover:text-gold-light">Contact</a>
+        <a href="#"        class="text-muted text-sm no-underline transition-colors duration-300 hover:text-gold-light">Privacy</a>
+      </div>
+      <div class="flex gap-3">
+  <a href="https://facebook.com" target="_blank" class="w-10 h-10 rounded-xl flex items-center justify-center text-muted no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.background='rgba(201,168,76,0.1)';this.style.borderColor='rgba(201,168,76,0.3)';this.style.color='#e8c97e'" onmouseleave="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#8a9bbf'">
+    <i class="fa-brands fa-facebook-f text-sm"></i>
+  </a>
+  <a href="https://instagram.com" target="_blank" class="w-10 h-10 rounded-xl flex items-center justify-center text-muted no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.background='rgba(201,168,76,0.1)';this.style.borderColor='rgba(201,168,76,0.3)';this.style.color='#e8c97e'" onmouseleave="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#8a9bbf'">
+    <i class="fa-brands fa-instagram text-sm"></i>
+  </a>
+  <a href="https://twitter.com" target="_blank" class="w-10 h-10 rounded-xl flex items-center justify-center text-muted no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.background='rgba(201,168,76,0.1)';this.style.borderColor='rgba(201,168,76,0.3)';this.style.color='#e8c97e'" onmouseleave="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#8a9bbf'">
+    <i class="fa-brands fa-x-twitter text-sm"></i>
+  </a>
+</div>
+    </div>
+    <div class="text-center text-muted text-xs pt-6" style="border-top:1px solid rgba(255,255,255,0.05);">
+      © 2026 Randekhi Hotels. All rights reserved. Crafted with excellence.
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+  <script>
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const bar1 = document.getElementById('bar1');
+    const bar2 = document.getElementById('bar2');
+    const bar3 = document.getElementById('bar3');
+    const isOpen = menu.style.maxHeight && menu.style.maxHeight !== '0px';
+
+    if (isOpen) {
+      menu.style.maxHeight = '0px';
+      bar1.style.transform = 'none';
+      bar2.style.opacity = '1';
+      bar3.style.transform = 'none';
+    } else {
+      menu.style.maxHeight = menu.scrollHeight + 'px';
+      // animate to X
+      bar1.style.transform = 'translateY(8px) rotate(45deg)';
+      bar2.style.opacity = '0';
+      bar3.style.transform = 'translateY(-8px) rotate(-45deg)';
+    }
+  }
+
+  // close menu when a link is clicked
+  document.querySelectorAll('#mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      const bar1 = document.getElementById('bar1');
+      const bar2 = document.getElementById('bar2');
+      const bar3 = document.getElementById('bar3');
+      menu.style.maxHeight = '0px';
+      bar1.style.transform = 'none';
+      bar2.style.opacity = '1';
+      bar3.style.transform = 'none';
+    });
+  });
+</script>
+
+
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const contents = document.querySelectorAll('.slide-content');
+  const dots = document.querySelectorAll('.slide-dot');
+  let autoTimer;
+
+  function showSlide(n) {
+    slides.forEach((s, i) => {
+      s.style.opacity = '0';
+      s.style.zIndex = '0';
+      contents[i].style.opacity = '0';
+      contents[i].style.transform = 'translateY(30px)';
+      dots[i].style.background = 'rgba(201,168,76,0.4)';
+      dots[i].style.width = '8px';
+    });
+    currentSlide = (n + slides.length) % slides.length;
+    slides[currentSlide].style.opacity = '1';
+    slides[currentSlide].style.zIndex = '10';
+    dots[currentSlide].style.background = '#c9a84c';
+    dots[currentSlide].style.width = '28px';
+    dots[currentSlide].style.borderRadius = '4px';
+    setTimeout(() => {
+      contents[currentSlide].style.opacity = '1';
+      contents[currentSlide].style.transform = 'translateY(0)';
+    }, 300);
+  }
+
+  function nextSlide() { clearInterval(autoTimer); showSlide(currentSlide + 1); startAuto(); }
+  function prevSlide() { clearInterval(autoTimer); showSlide(currentSlide - 1); startAuto(); }
+  function goToSlide(n) { clearInterval(autoTimer); showSlide(n); startAuto(); }
+  function startAuto() { autoTimer = setInterval(() => showSlide(currentSlide + 1), 5000); }
+
+  showSlide(0);
+  startAuto();
+</script>
+
+
+<script>
+  const galleryItems = document.querySelectorAll('.gallery-item');
+
+  const galleryObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = `${index * 100}ms`;
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+      }
+    });
+  }, { threshold: 0.1 });
+
+  galleryItems.forEach((item) => {
+    item.style.opacity = "0";
+    item.style.transform = "translateY(30px)";
+    galleryObserver.observe(item);
+  });
+</script>
+
+</body>
+</html>
