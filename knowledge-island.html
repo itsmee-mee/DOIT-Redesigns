@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Knowledge Island</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:     '#0a0f2e',
+            'navy-mid':'#0f1a4a',
+            royal:    '#1e3a8a',
+            'royal-light':'#2563eb',
+            teal:     '#0ea5e9',
+            'teal-light':'#38bdf8',
+            'teal-dim':'#0c4a6e',
+            gold:     '#f59e0b',
+            'gold-light':'#fcd34d',
+            muted:    '#94a3b8',
+            'white-dim':'rgba(255,255,255,0.7)',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"','serif'],
+            body:    ['Outfit','sans-serif'],
+            mono:    ['"Space Grotesk"','sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:#0a0f2e;color:#fff;overflow-x:hidden;}
+
+    /* ── GRADIENT TEXT ── */
+    .text-grad{background:linear-gradient(135deg,#38bdf8,#ffffff,#fcd34d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .text-teal-grad{background:linear-gradient(135deg,#0ea5e9,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* ── GRID BG ── */
+    .grid-bg{background-image:linear-gradient(rgba(14,165,233,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,0.04) 1px,transparent 1px);background-size:50px 50px;}
+
+    /* ── HERO BG ── */
+    .hero-bg{
+      background:
+        radial-gradient(ellipse at 10% 50%,rgba(30,58,138,0.7) 0%,transparent 55%),
+        radial-gradient(ellipse at 90% 20%,rgba(14,165,233,0.3) 0%,transparent 50%),
+        radial-gradient(ellipse at 50% 100%,rgba(10,15,46,0.9) 0%,transparent 60%),
+        linear-gradient(135deg,#0a0f2e 0%,#0f1a4a 40%,#1e3a8a 70%,#0c4a6e 100%);
+    }
+
+    /* ── NAV ── */
+    .nav-scrolled{background:rgba(10,15,46,0.97)!important;backdrop-filter:blur(20px);box-shadow:0 4px 30px rgba(0,0,0,0.3);}
+
+    /* ── TYPEWRITER ── */
+    .typewriter{border-right:3px solid #0ea5e9;padding-right:4px;animation:blink 0.8s step-end infinite;}
+    @keyframes blink{0%,100%{border-color:#0ea5e9;}50%{border-color:transparent;}}
+
+    /* ── FADE IN ── */
+    .fade-up{opacity:0;transform:translateY(40px);transition:opacity 0.9s ease,transform 0.9s ease;}
+    .fade-up.visible{opacity:1;transform:translateY(0);}
+    .fade-left{opacity:0;transform:translateX(-40px);transition:opacity 0.9s ease,transform 0.9s ease;}
+    .fade-left.visible{opacity:1;transform:translateX(0);}
+    .fade-right{opacity:0;transform:translateX(40px);transition:opacity 0.9s ease,transform 0.9s ease;}
+    .fade-right.visible{opacity:1;transform:translateX(0);}
+
+    /* ── GLASS CARD ── */
+    .glass{background:rgba(255,255,255,0.04);border:1px solid rgba(14,165,233,0.15);border-radius:20px;backdrop-filter:blur(10px);transition:all 0.4s;}
+    .glass:hover{border-color:rgba(14,165,233,0.4);box-shadow:0 20px 60px rgba(0,0,0,0.3),0 0 40px rgba(14,165,233,0.08);}
+
+    /* ── DIVIDER ── */
+    .teal-divider{width:60px;height:3px;background:linear-gradient(90deg,#0ea5e9,#38bdf8);border-radius:2px;margin:1rem 0;}
+    .teal-divider-center{margin:1rem auto;}
+
+    /* ── BUTTONS ── */
+    .btn-gold{background:linear-gradient(135deg,#f59e0b,#fcd34d);color:#0a0f2e;padding:0.9rem 2.2rem;border-radius:50px;font-weight:600;font-size:0.88rem;text-decoration:none;transition:all 0.3s;display:inline-block;letter-spacing:0.03em;border:none;cursor:pointer;font-family:'Outfit',sans-serif;}
+    .btn-gold:hover{box-shadow:0 0 30px rgba(245,158,11,0.5);transform:translateY(-2px);}
+    .btn-outline{background:transparent;color:#fff;padding:0.9rem 2.2rem;border-radius:50px;font-size:0.88rem;text-decoration:none;transition:all 0.3s;display:inline-block;letter-spacing:0.03em;border:1px solid rgba(255,255,255,0.3);}
+    .btn-outline:hover{border-color:#0ea5e9;color:#38bdf8;transform:translateY(-2px);}
+
+    /* ── SECTION TAG ── */
+    .sec-tag{color:#0ea5e9;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;font-family:'Space Grotesk',sans-serif;margin-bottom:0.8rem;}
+
+    /* ── SLIDESHOW ── */
+    .slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;}
+    .slide.active{opacity:1;}
+    .slide-content{opacity:0;transform:translateY(30px);transition:all 0.8s ease 0.4s;}
+    .slide.active .slide-content{opacity:1;transform:translateY(0);}
+
+    /* ── MOBILE MENU ── */
+    #mobile-menu{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+    #mobile-menu.open{max-height:500px;}
+
+    /* ── STAT COUNTER ── */
+    .stat-card{position:relative;overflow:hidden;}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0ea5e9,#38bdf8,#f59e0b);}
+
+    /* ── PULSE ── */
+    .pulse{animation:pulseAnim 2s ease-in-out infinite;}
+    @keyframes pulseAnim{0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,0.4);}50%{box-shadow:0 0 0 12px rgba(14,165,233,0);}}
+
+    /* ── SCROLL LINE ── */
+    .scroll-line{width:1px;height:50px;background:linear-gradient(180deg,#0ea5e9,transparent);animation:scrollAnim 2s ease-in-out infinite;}
+    @keyframes scrollAnim{0%,100%{opacity:0.3;transform:scaleY(0.7);}50%{opacity:1;transform:scaleY(1);}}
+
+    /* ── LOGO TEXT ── */
+    .logo-k{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.5rem;background:linear-gradient(135deg,#38bdf8,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .logo-sub{font-family:'Space Grotesk',sans-serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:#0ea5e9;line-height:1;}
+
+    /* ── GALLERY GRID ANIMATION ── */
+    @keyframes floatUp{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+    .float-1{animation:floatUp 4s ease-in-out infinite;}
+    .float-2{animation:floatUp 4s ease-in-out infinite 1s;}
+    .float-3{animation:floatUp 4s ease-in-out infinite 2s;}
+    .float-4{animation:floatUp 4s ease-in-out infinite 3s;}
+
+    /* ── WAVE DIVIDER ── */
+    .wave{position:relative;height:60px;overflow:hidden;}
+    .wave svg{position:absolute;bottom:0;width:100%;}
+
+    @keyframes pulseRing{0%,100%{transform:scale(1);opacity:0.5;}50%{transform:scale(1.06);opacity:1;}}
+
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:#0a0f2e;}
+    ::-webkit-scrollbar-thumb{background:#1e3a8a;border-radius:2px;}
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-6 md:px-12"
+     style="background:linear-gradient(180deg,rgba(10,15,46,0.95) 0%,rgba(10,15,46,0) 100%);">
+  <div class="flex items-center justify-between">
+
+    <!-- LOGO -->
+    <a href="#" class="flex items-center gap-3 no-underline">
+      <div class="w-25 h-20 rounded-xl flex items-center justify-center pulse"
+           style="background:linear-gradient(135deg,#1e3a8a,#0ea5e9);border:1px solid rgba(14,165,233,0.4);">
+         <img src="assest/sch_logo.png" alt="Logo" class="w-full h-full object-cover rounded-2xl"/>
+      </div>
+      <div>
+        <div class="logo-k">Knowledge Island</div>
+      </div>
+    </a>
+
+    <!-- DESKTOP LINKS -->
+    <ul class="hidden md:flex gap-8 list-none items-center">
+      <li><a href="#home"    class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-teal-light font-body">Home</a></li>
+      <li><a href="#gallery" class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-teal-light font-body">Gallery</a></li>
+      <li><a href="#about"   class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-teal-light font-body">About</a></li>
+      <li><a href="#results" class="text-white/75 no-underline text-sm tracking-wide transition-colors duration-300 hover:text-teal-light font-body">Check Result</a></li>
+      <li><a href="#login"   class="btn-gold" style="padding:0.5rem 1.4rem;font-size:0.82rem;">Login →</a></li>
+    </ul>
+
+    <!-- HAMBURGER -->
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 bg-transparent border-none cursor-pointer" onclick="toggleNav()">
+      <span id="b1" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      <span id="b2" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      <span id="b3" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+    </button>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" style="background:rgba(10,15,46,0.98);border-top:1px solid rgba(14,165,233,0.15);margin-top:0.8rem;border-radius:16px;">
+    <ul class="list-none flex flex-col px-6 py-5 gap-4">
+      <li><a href="#home"    onclick="toggleNav()" class="text-white/75 no-underline text-sm tracking-wide block py-1 hover:text-teal-light transition-colors">Home</a></li>
+      <li><a href="#gallery" onclick="toggleNav()" class="text-white/75 no-underline text-sm tracking-wide block py-1 hover:text-teal-light transition-colors">Gallery</a></li>
+      <li><a href="#about"   onclick="toggleNav()" class="text-white/75 no-underline text-sm tracking-wide block py-1 hover:text-teal-light transition-colors">About</a></li>
+      <li><a href="#results" onclick="toggleNav()" class="text-white/75 no-underline text-sm tracking-wide block py-1 hover:text-teal-light transition-colors">Check Result</a></li>
+      <li><a href="#login"   onclick="toggleNav()" class="btn-gold inline-block" style="padding:0.55rem 1.4rem;font-size:0.82rem;">Login →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section id="home" class="relative min-h-screen flex items-center overflow-hidden hero-bg grid-bg">
+
+  <!-- orbs -->
+  <div class="absolute w-96 h-96 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(14,165,233,0.15) 0%,transparent 70%);top:-50px;right:-50px;"></div>
+  <div class="absolute w-80 h-80 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(30,58,138,0.3) 0%,transparent 70%);bottom:50px;left:-50px;"></div>
+
+  <div class="relative z-10 w-full px-6 md:px-16 pt-24 pb-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+      <!-- LEFT -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 mt-6"
+             style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.3);">
+          <div class="w-2 h-2 rounded-full bg-teal pulse" style="animation-duration:1.5s;"></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:0.72rem;letter-spacing:0.15em;color:#38bdf8;text-transform:uppercase;">Now Enrolling 2025/2026</span>
+        </div>
+
+        <h1 class="font-display font-bold leading-tight mb-6" style="font-size:clamp(2.8rem,6vw,4.5rem);">
+          Where Every<br/>
+          Child Becomes<br/>
+          <span class="text-grad inline-block min-w-[220px]" id="typewriter-el"></span>
+        </h1>
+
+        <p class="text-white/60 font-body leading-relaxed mb-8 text-base" style="max-width:480px;">
+          Knowledge Island nurtures curious minds through a dynamic learning environment - blending academic excellence with moral values, technology, and real-world skills.
+        </p>
+
+        <div class="flex gap-4 flex-wrap mb-10">
+          <a href="#about" class="btn-gold">Enroll Now →</a>
+          <a href="#about" class="btn-outline">Learn More</a>
+        </div>
+
+        <!-- MINI STATS -->
+        <div class="flex gap-6 flex-wrap">
+          <div>
+            <div class="font-display font-bold text-2xl text-teal-grad">500+</div>
+            <div class="text-white/40 text-xs font-mono tracking-wider">Students</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+          <div>
+            <div class="font-display font-bold text-2xl text-teal-grad">30+</div>
+            <div class="text-white/40 text-xs font-mono tracking-wider">Teachers</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+          <div>
+            <div class="font-display font-bold text-2xl text-teal-grad">10+</div>
+            <div class="text-white/40 text-xs font-mono tracking-wider">Years</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — IMAGE STACK -->
+<div class="relative h-[300px] md:h-[480px] scale-[0.75] sm:scale-[0.85] md:scale-100 origin-top">
+
+  <!-- Image 1 -->
+  <div class="absolute float-1" style="width:260px;height:320px;top:0;right:60px;border-radius:24px;overflow:hidden;border:3px solid rgba(14,165,233,0.3);box-shadow:0 30px 80px rgba(0,0,0,0.5);">
+    <img src="assest/ki.jpg" alt="Students" class="w-full h-full object-cover"/>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(10,15,46,0.8) 100%);"></div>
+  </div>
+
+  <!-- Image 2 -->
+  <div class="absolute float-2" style="width:200px;height:240px;Top:220px;right:0;border-radius:20px;overflow:hidden;border:3px solid rgba(245,158,11,0.3);box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+    <img src="assest/ki1.jpg" alt="Student" class="w-full h-full object-cover"/>
+  </div>
+
+  <!-- Image 3 -->
+  <div class="absolute float-3" style="width:160px;height:180px;Top:250px;right:220px;border-radius:16px;overflow:hidden;border:3px solid rgba(56,189,248,0.3);box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+    <img src="assest/ki2.jpg" alt="Students" class="w-full h-full object-cover"/>
+  </div>
+
+  <!-- Badge -->
+  <div class="absolute" style="top:20px;right:0;background:linear-gradient(135deg,#f59e0b,#fcd34d);border-radius:14px;padding:0.8rem 1.2rem;box-shadow:0 10px 30px rgba(245,158,11,0.4);">
+    <div style="font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.4rem;color:#0a0f2e;line-height:1;">
+      A+
+    </div>
+    <div style="font-size:0.6rem;color:#0a0f2e;font-family:'Space Grotesk',sans-serif;letter-spacing:0.08em;">
+      Excellence
+    </div>
+  </div>
+
+</div>
+
+    </div>
+  </div>
+
+  <!-- SCROLL INDICATOR -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 text-xs tracking-widest uppercase font-mono">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SLIDESHOW SECTION ═══════════════════════════════ -->
+<section class="relative overflow-hidden" style="height:600px;">
+  <div class="relative w-full h-full">
+
+    <!-- Slide 1 -->
+    <div class="slide active" style="background:#0a0f2e;">
+      <img src="assest/student.jpg" alt="Students with tablet" class="absolute inset-0 w-full h-full object-cover object-top"/>
+      <div class="absolute inset-0" style="background:linear-gradient(135deg,rgba(10,15,46,0.85) 0%,rgba(30,58,138,0.6) 50%,rgba(10,15,46,0.9) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-center px-8 md:px-20">
+        <div class="sec-tag">✦ Technology & Learning</div>
+        <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.5rem);max-width:600px;">
+          Learning With <span class="text-grad">21st Century</span> Tools
+        </h2>
+        <p class="text-white/60 font-body leading-relaxed mb-6" style="max-width:460px;font-size:1rem;">
+          Our students explore knowledge through tablets, digital tools and hands-on technology - preparing them for a world that is always changing.
+        </p>
+        <a href="#about" class="btn-gold" style="width:fit-content;">Discover More →</a>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" style="background:#0a0f2e;">
+      <img src="assest/ki6.jpg" alt="Students celebrating" class="absolute inset-0 w-full h-full object-cover"/>
+      <div class="absolute inset-0" style="background:linear-gradient(to right,rgba(10,15,46,0.9) 0%,rgba(14,116,144,0.4) 60%,rgba(10,15,46,0.85) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-center items-center text-center px-8">
+        <div class="sec-tag">✦ Excellence & Achievement</div>
+        <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.5rem);max-width:650px;">
+          We Celebrate Every <span class="text-grad">Victory</span>
+        </h2>
+        <p class="text-white/60 font-body leading-relaxed mb-6" style="max-width:480px;font-size:1rem;">
+          From classroom wins to national achievements - Knowledge Island students are raised to celebrate progress, push limits and never stop growing.
+        </p>
+        <a href="#about" class="btn-gold" style="width:fit-content;">Our Achievements →</a>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" style="background:#0a0f2e;">
+      <img src="assest/leaders.jpg" alt="Students learning" class="absolute inset-0 w-full h-full object-cover"/>
+      <div class="absolute inset-0" style="background:linear-gradient(to left,rgba(10,15,46,0.9) 0%,rgba(30,58,138,0.5) 60%,rgba(10,15,46,0.85) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-center items-end px-8 md:px-20 text-right">
+        <div class="sec-tag">✦ Collaborative Spirit</div>
+        <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.5rem);max-width:600px;">
+          Growing Together <span class="text-grad">Every Day</span>
+        </h2>
+        <p class="text-white/60 font-body leading-relaxed mb-6" style="max-width:460px;font-size:1rem;">
+          Teamwork, friendship and shared purpose define life at Knowledge Island. Our students don't just learn - they build each other up.
+        </p>
+        <a href="#about" class="btn-gold" style="width:fit-content;">Join Our Community →</a>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" style="background:#0a0f2e;">
+      <img src="assest/k13.jpg" alt="Young student" class="absolute inset-0 w-full h-full object-cover object-top"/>
+      <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(10,15,46,0.5) 0%,rgba(10,15,46,0.9) 100%);"></div>
+      <div class="slide-content absolute inset-0 flex flex-col justify-end px-8 md:px-20 pb-16">
+        <div class="sec-tag">✦ Every Child Matters</div>
+        <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(2rem,5vw,3.5rem);max-width:600px;">
+          Your Child Deserves <span class="text-grad">The Best Start</span>
+        </h2>
+        <p class="text-white/60 font-body leading-relaxed mb-6" style="max-width:460px;font-size:1rem;">
+          From creche through secondary school, we provide a nurturing, world-class education tailored for every stage of your child's growth.
+        </p>
+        <a href="#about" class="btn-gold" style="width:fit-content;">Enroll Today →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOTS -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+    <button onclick="goSlide(0)" class="slide-dot cursor-pointer border-none transition-all duration-300" style="width:8px;height:8px;border-radius:50%;background:rgba(14,165,233,0.4);padding:0;"></button>
+    <button onclick="goSlide(1)" class="slide-dot cursor-pointer border-none transition-all duration-300" style="width:8px;height:8px;border-radius:50%;background:rgba(14,165,233,0.4);padding:0;"></button>
+    <button onclick="goSlide(2)" class="slide-dot cursor-pointer border-none transition-all duration-300" style="width:8px;height:8px;border-radius:50%;background:rgba(14,165,233,0.4);padding:0;"></button>
+    <button onclick="goSlide(3)" class="slide-dot cursor-pointer border-none transition-all duration-300" style="width:8px;height:8px;border-radius:50%;background:rgba(14,165,233,0.4);padding:0;"></button>
+  </div>
+
+  <!-- ARROWS -->
+  <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center border-none cursor-pointer transition-all duration-300" style="background:rgba(10,15,46,0.7);border:1px solid rgba(14,165,233,0.3);" onmouseenter="this.style.background='rgba(14,165,233,0.2)'" onmouseleave="this.style.background='rgba(10,15,46,0.7)'">
+    <i class="fa-solid fa-chevron-left text-teal-light text-xs"></i>
+  </button>
+  <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center border-none cursor-pointer transition-all duration-300" style="background:rgba(10,15,46,0.7);border:1px solid rgba(14,165,233,0.3);" onmouseenter="this.style.background='rgba(14,165,233,0.2)'" onmouseleave="this.style.background='rgba(10,15,46,0.7)'">
+    <i class="fa-solid fa-chevron-right text-teal-light text-xs"></i>
+  </button>
+</section>
+
+<!-- ═══════════════════════════════ STATS ═══════════════════════════════ -->
+<div class="py-12 px-6 md:px-16 fade-up" style="background:linear-gradient(135deg,rgba(30,58,138,0.4),rgba(12,74,110,0.3));border-top:1px solid rgba(14,165,233,0.1);border-bottom:1px solid rgba(14,165,233,0.1);">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto text-center">
+    <div class="stat-card glass p-6">
+      <div class="font-display font-bold text-3xl text-teal-grad mb-1">500+</div>
+      <div class="text-white/50 text-xs font-mono tracking-wider">Happy Students</div>
+    </div>
+    <div class="stat-card glass p-6">
+      <div class="font-display font-bold text-3xl text-teal-grad mb-1">30+</div>
+      <div class="text-white/50 text-xs font-mono tracking-wider">Qualified Teachers</div>
+    </div>
+    <div class="stat-card glass p-6">
+      <div class="font-display font-bold text-3xl text-teal-grad mb-1">10+</div>
+      <div class="text-white/50 text-xs font-mono tracking-wider">Years of Excellence</div>
+    </div>
+    <div class="stat-card glass p-6">
+      <div class="font-display font-bold text-3xl text-teal-grad mb-1">98%</div>
+      <div class="text-white/50 text-xs font-mono tracking-wider">Pass Rate</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
+<section id="about" class="py-20 px-6 md:px-16 fade-up grid-bg" style="background:linear-gradient(160deg,#0a0f2e 0%,#0f1a4a 50%,#0a0f2e 100%);">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+
+    <!-- LEFT IMAGES -->
+    <div class="relative fade-left" style="height:420px;">
+      <div style="position:absolute;top:0;left:0;width:65%;height:75%;border-radius:24px;overflow:hidden;border:3px solid rgba(14,165,233,0.25);box-shadow:0 30px 80px rgba(0,0,0,0.5);">
+        <img src="assest/ki5.jpg" alt="Students" class="w-full h-full object-cover"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(10,15,46,0.7) 100%);"></div>
+      </div>
+      <div style="position:absolute;bottom:0;right:0;width:55%;height:55%;border-radius:20px;overflow:hidden;border:3px solid rgba(245,158,11,0.3);box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+        <img src="assest/ki4.jpg" alt="Students celebrating" class="w-full h-full object-cover"/>
+      </div>
+      <!-- floating badge -->
+      <div class="absolute" style="bottom:30%;left:55%;transform:translate(-50%,50%);background:linear-gradient(135deg,#0ea5e9,#1e3a8a);border-radius:16px;padding:1rem 1.2rem;text-align:center;border:2px solid rgba(14,165,233,0.4);box-shadow:0 10px 40px rgba(14,165,233,0.3);">
+        <div style="font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.6rem;line-height:1;">10+</div>
+        <div style="font-size:0.6rem;font-family:'Space Grotesk',sans-serif;letter-spacing:0.1em;color:rgba(255,255,255,0.7);">YEARS</div>
+      </div>
+    </div>
+
+    <!-- RIGHT TEXT -->
+    <div class="fade-right">
+      <div class="sec-tag">✦ About Our School</div>
+      <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(2rem,4vw,3rem);">
+        Building Tomorrow's <span class="text-teal-grad">Leaders</span> Today
+      </h2>
+      <div class="teal-divider"></div>
+      <p class="text-white/60 leading-relaxed mb-5 text-sm">
+        Knowledge Island is a premier educational institution dedicated to the holistic development of every child - academically, morally, and socially. We combine a rigorous curriculum with a warm, supportive environment.
+      </p>
+      <p class="text-white/60 leading-relaxed mb-8 text-sm">
+        From creche to secondary school, we equip students with the skills, values and confidence they need to succeed in an ever-changing world.
+      </p>
+
+      <!-- FEATURES -->
+      <div class="space-y-4 mb-8">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);">
+            <i class="fa-solid fa-check text-teal text-xs"></i>
+          </div>
+          <span class="text-white/70 text-sm">Qualified and experienced teaching staff</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);">
+            <i class="fa-solid fa-check text-teal text-xs"></i>
+          </div>
+          <span class="text-white/70 text-sm">Modern technology-driven classrooms</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);">
+            <i class="fa-solid fa-check text-teal text-xs"></i>
+          </div>
+          <span class="text-white/70 text-sm">Strong moral and character development focus</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);">
+            <i class="fa-solid fa-check text-teal text-xs"></i>
+          </div>
+          <span class="text-white/70 text-sm">Extracurricular activities and sports programs</span>
+        </div>
+      </div>
+
+      <a href="#" class="btn-gold">Learn More About Us →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ GALLERY ═══════════════════════════════ -->
+<section id="gallery" class="py-20 px-6 md:px-16 fade-up" style="background:linear-gradient(160deg,#0f1a4a 0%,#0a0f2e 50%,#0c2a4a 100%);">
+  <div class="text-center mb-14">
+    <div class="sec-tag">✦ School Life</div>
+    <h2 class="font-display font-bold leading-tight" style="font-size:clamp(2rem,4vw,3rem);">Our <span class="text-teal-grad">Gallery</span></h2>
+    <div class="teal-divider teal-divider-center"></div>
+    <p class="text-white/50 text-sm max-w-md mx-auto">A glimpse into the vibrant, joyful life at Knowledge Island.</p>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+    <div class="col-span-2 rounded-2xl overflow-hidden relative group" style="height:280px;border:2px solid rgba(14,165,233,0.15);">
+      <img src="assest/leaders.jpg" alt="Students" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(10,15,46,0.9) 100%);">
+        <span class="text-white text-sm font-mono">Technology & Learning</span>
+      </div>
+    </div>
+    <div class="rounded-2xl overflow-hidden relative group" style="height:280px;border:2px solid rgba(14,165,233,0.15);">
+      <img src="assest/ki5.jpg" alt="Students" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(10,15,46,0.9) 100%);">
+        <span class="text-white text-sm font-mono">Team Spirit</span>
+      </div>
+    </div>
+    <div class="rounded-2xl overflow-hidden relative group" style="height:280px;border:2px solid rgba(245,158,11,0.15);">
+      <img src="assest/ki4.jpg" alt="Student" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"/>
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(10,15,46,0.9) 100%);">
+        <span class="text-white text-sm font-mono">Academic Excellence</span>
+      </div>
+    </div>
+    <div class="rounded-2xl overflow-hidden relative group" style="height:240px;border:2px solid rgba(14,165,233,0.15);">
+      <img src="assest/student.jpg" alt="Students" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(10,15,46,0.9) 100%);">
+        <span class="text-white text-sm font-mono">Collaborative Learning</span>
+      </div>
+    </div>
+    <div class="col-span-2 rounded-2xl overflow-hidden relative group" style="height:240px;border:2px solid rgba(56,189,248,0.15);">
+      <img src="assest/ki.jpg" alt="Students" class="w-full h-full object-cover object-bottom transition-transform duration-500 group-hover:scale-105"/>
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(10,15,46,0.9) 100%);">
+        <span class="text-white text-sm font-mono">Future Leaders</span>
+      </div>
+    </div>
+    <div class="rounded-2xl overflow-hidden relative group" style="height:240px;border:2px solid rgba(14,165,233,0.15);">
+      <img src="assest/ki6.jpg" alt="Students" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"/>
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4" style="background:linear-gradient(180deg,transparent 40%,rgba(10,15,46,0.9) 100%);">
+        <span class="text-white text-sm font-mono">Joy of Learning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ PROGRAMS ═══════════════════════════════ -->
+<section class="py-20 px-6 md:px-16 fade-up" style="background:linear-gradient(135deg,#0a0f2e,#0f1a4a,#0a0f2e);">
+  <div class="text-center mb-14">
+    <div class="sec-tag">✦ What We Offer</div>
+    <h2 class="font-display font-bold" style="font-size:clamp(2rem,4vw,3rem);">Our <span class="text-teal-grad">Programs</span></h2>
+    <div class="teal-divider teal-divider-center"></div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    <div class="glass p-8 text-center" style="border-top:3px solid #0ea5e9;">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5" style="background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);">
+        <i class="fa-solid fa-baby text-teal text-xl"></i>
+      </div>
+      <h3 class="font-display font-bold text-xl mb-3">Creche & Nursery</h3>
+      <p class="text-white/50 text-sm leading-relaxed">A warm, safe and stimulating environment for your youngest ones - building confidence and curiosity from the very start.</p>
+    </div>
+    <div class="glass p-8 text-center" style="border-top:3px solid #38bdf8;">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);">
+        <i class="fa-solid fa-book-open text-teal-light text-xl"></i>
+      </div>
+      <h3 class="font-display font-bold text-xl mb-3">Primary School</h3>
+      <p class="text-white/50 text-sm leading-relaxed">A strong academic foundation with a focus on literacy, numeracy, technology and character development through engaging lessons.</p>
+    </div>
+    <div class="glass p-8 text-center" style="border-top:3px solid #f59e0b;">
+      <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);">
+        <i class="fa-solid fa-graduation-cap text-gold text-xl"></i>
+      </div>
+      <h3 class="font-display font-bold text-xl mb-3">Secondary School</h3>
+      <p class="text-white/50 text-sm leading-relaxed">Preparing students for WAEC, NECO and beyond - with strong academics, mentorship and leadership development at every level.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CHECK RESULT ═══════════════════════════════ -->
+<section id="results" class="py-20 px-6 md:px-16 fade-up" style="background:linear-gradient(135deg,#0c2a4a,#0a0f2e,#0f1a4a);">
+  <div class="max-w-2xl mx-auto text-center">
+    <div class="sec-tag">✦ Student Portal</div>
+    <h2 class="font-display font-bold mb-4" style="font-size:clamp(2rem,4vw,3rem);">Check Your <span class="text-teal-grad">Result</span></h2>
+    <div class="teal-divider teal-divider-center"></div>
+    <p class="text-white/50 text-sm mb-10 leading-relaxed">Enter your student ID and PIN to view your academic results securely.</p>
+
+    <div class="glass p-8">
+      <div class="mb-5">
+        <input type="text" placeholder="Student ID / Admission Number"
+               class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-5 font-body"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(14,165,233,0.2);border-radius:12px;"
+               onfocus="this.style.borderColor='rgba(14,165,233,0.5)'"
+               onblur="this.style.borderColor='rgba(14,165,233,0.2)'"/>
+      </div>
+      <div class="mb-5">
+        <input type="password" placeholder="PIN / Password"
+               class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-5 font-body"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(14,165,233,0.2);border-radius:12px;"
+               onfocus="this.style.borderColor='rgba(14,165,233,0.5)'"
+               onblur="this.style.borderColor='rgba(14,165,233,0.2)'"/>
+      </div>
+      <div class="mb-4">
+        <select class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-5 font-body"
+                style="background:#0f1a4a;border:1px solid rgba(14,165,233,0.2);border-radius:12px;cursor:pointer;">
+          <option style="background:#0f1a4a;">Select Term</option>
+          <option style="background:#0f1a4a;">First Term</option>
+          <option style="background:#0f1a4a;">Second Term</option>
+          <option style="background:#0f1a4a;">Third Term</option>
+        </select>
+      </div>
+      <button class="btn-gold w-full text-center border-none cursor-pointer" style="font-family:'Outfit',sans-serif;">
+        Check Result →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ LOGIN ═══════════════════════════════ -->
+<section id="login" class="py-20 px-6 md:px-16 fade-up" style="background:linear-gradient(160deg,#0a0f2e,#0f1a4a);">
+  <div class="max-w-md mx-auto text-center">
+    <div class="sec-tag">✦ Portal Access</div>
+    <h2 class="font-display font-bold mb-4" style="font-size:clamp(2rem,4vw,3rem);">Staff & Parent <span class="text-teal-grad">Login</span></h2>
+    <div class="teal-divider teal-divider-center"></div>
+
+    <div class="glass p-8 mt-8">
+      <!-- TABS -->
+      <div class="flex rounded-xl mb-6 p-1" style="background:rgba(255,255,255,0.05);">
+        <button id="tab-parent" onclick="switchTab('parent')" class="flex-1 py-2 rounded-lg text-sm font-mono transition-all duration-300" style="background:linear-gradient(135deg,#0ea5e9,#1e3a8a);color:#fff;">Parent</button>
+        <button id="tab-staff" onclick="switchTab('staff')" class="flex-1 py-2 rounded-lg text-sm font-mono transition-all duration-300" style="background:transparent;color:rgba(255,255,255,0.5);">Staff</button>
+      </div>
+      <div class="mb-5">
+        <input type="email" placeholder="Email Address"
+               class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-5 font-body"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(14,165,233,0.2);border-radius:12px;"
+               onfocus="this.style.borderColor='rgba(14,165,233,0.5)'"
+               onblur="this.style.borderColor='rgba(14,165,233,0.2)'"/>
+      </div>
+      <div class="mb-6">
+        <input type="password" placeholder="Password"
+               class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-5 font-body"
+               style="background:rgba(255,255,255,0.04);border:1px solid rgba(14,165,233,0.2);border-radius:12px;"
+               onfocus="this.style.borderColor='rgba(14,165,233,0.5)'"
+               onblur="this.style.borderColor='rgba(14,165,233,0.2)'"/>
+      </div>
+      <button class="btn-gold w-full text-center border-none cursor-pointer mb-4" style="font-family:'Outfit',sans-serif;">Login →</button>
+      <a href="#" class="text-teal text-xs font-mono hover:underline">Forgot Password?</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CTA BANNER ═══════════════════════════════ -->
+<section class="py-16 px-6 md:px-16 fade-up" style="background:linear-gradient(135deg,#1e3a8a,#0ea5e9,#0c4a6e);">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="font-display font-bold mb-4" style="font-size:clamp(2rem,4vw,3rem);">Ready to Give Your Child the <span style="color:#fcd34d;">Best Education?</span></h2>
+    <p class="text-white/70 text-sm leading-relaxed mb-8 max-w-xl mx-auto">Join hundreds of families who trust Knowledge Island to shape their children's future. Admissions are open now.</p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="#" class="btn-gold">Apply for Admission →</a>
+      <a href="tel:+2348000000000" class="btn-outline">Call Us Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer style="background:#060910;border-top:1px solid rgba(14,165,233,0.1);" class="px-6 md:px-16 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+    <!-- LOGO COL -->
+    <div>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-25 h-20 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#1e3a8a,#0ea5e9);">
+           <img src="assest/sch_logo.png" alt="Logo" class="w-full h-full object-cover rounded-2xl"/>
+        </div>
+        <div>
+          <div class="logo-k" style="font-size:1.1rem;">Knowledge Island</div>
+        </div>
+      </div>
+      <p class="text-white/40 text-xs leading-relaxed max-w-xs">Nurturing tomorrow's leaders through academic excellence, moral values and a love for lifelong learning.</p>
+    </div>
+
+    <!-- LINKS -->
+    <div>
+      <div class="sec-tag mb-4">Quick Links</div>
+      <div class="space-y-2">
+        <a href="#home"    class="block text-white/50 text-sm no-underline hover:text-teal-light transition-colors">Home</a>
+        <a href="#about"   class="block text-white/50 text-sm no-underline hover:text-teal-light transition-colors">About Us</a>
+        <a href="#gallery" class="block text-white/50 text-sm no-underline hover:text-teal-light transition-colors">Gallery</a>
+        <a href="#results" class="block text-white/50 text-sm no-underline hover:text-teal-light transition-colors">Check Result</a>
+        <a href="#login"   class="block text-white/50 text-sm no-underline hover:text-teal-light transition-colors">Login</a>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div>
+      <div class="sec-tag mb-4">Contact Us</div>
+      <div class="space-y-3">
+        <div class="flex items-start gap-3">
+          <i class="fa-solid fa-location-dot text-teal text-xs mt-1"></i>
+          <span class="text-white/50 text-xs leading-relaxed">Knowledge Island Group of Schools,  13 Akugbe St, Use, Benin City 300103, Edo</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-phone text-teal text-xs"></i>
+          <a href="tel:+2348000000000" class="text-white/50 text-xs no-underline hover:text-teal-light transition-colors">+234 800 000 0000</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-envelope text-teal text-xs"></i>
+          <a href="mailto:info@knowledgeisland.edu.ng" class="text-white/50 text-xs no-underline hover:text-teal-light transition-colors">info@knowledgeisland.edu.ng</a>
+        </div>
+      </div>
+      <!-- SOCIALS -->
+      <div class="flex gap-3 mt-5">
+        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(14,165,233,0.4)';this.style.color='#38bdf8'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#94a3b8'"><i class="fa-brands fa-facebook-f text-xs text-muted"></i></a>
+        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(14,165,233,0.4)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-brands fa-instagram text-xs text-muted"></i></a>
+        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(14,165,233,0.4)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-brands fa-x-twitter text-xs text-muted"></i></a>
+        <a href="https://wa.me/2348000000000" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(14,165,233,0.4)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-brands fa-whatsapp text-xs text-muted"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-white/25 text-xs pt-6" style="border-top:1px solid rgba(255,255,255,0.05);">
+    © 2026 Knowledge Island. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  // ── NAV SCROLL ──
+  window.addEventListener('scroll',()=>{
+    const nav=document.getElementById('navbar');
+    if(window.scrollY>60) nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  });
+
+  // ── MOBILE NAV ──
+  function toggleNav(){
+    const menu=document.getElementById('mobile-menu');
+    const b1=document.getElementById('b1'),b2=document.getElementById('b2'),b3=document.getElementById('b3');
+    const open=menu.classList.contains('open');
+    if(open){
+      menu.classList.remove('open');
+      b1.style.transform='none';b2.style.opacity='1';b3.style.transform='none';
+    }else{
+      menu.classList.add('open');
+      b1.style.transform='translateY(8px) rotate(45deg)';
+      b2.style.opacity='0';
+      b3.style.transform='translateY(-8px) rotate(-45deg)';
+    }
+  }
+
+  // ── TYPEWRITER ──
+  const words=['a Leader.','a Genius.','a Champion.','the Future.'];
+  let wi=0,ci=0,del=false;
+  function type(){
+    const el=document.getElementById('typewriter-el');
+    if(!el)return;
+    const w=words[wi];
+    if(!del){el.textContent=w.substring(0,ci+1);ci++;if(ci===w.length){del=true;setTimeout(type,1800);return;}}
+    else{el.textContent=w.substring(0,ci-1);ci--;if(ci===0){del=false;wi=(wi+1)%words.length;}}
+    setTimeout(type,del?60:100);
+  }
+  type();
+
+  // ── SLIDESHOW ──
+  let cur=0;
+  const slides=document.querySelectorAll('.slide');
+  const dots=document.querySelectorAll('.slide-dot');
+  let timer;
+  function showSlide(n){
+    slides.forEach((s,i)=>{s.classList.remove('active');dots[i].style.width='8px';dots[i].style.borderRadius='50%';dots[i].style.background='rgba(14,165,233,0.4)';});
+    cur=(n+slides.length)%slides.length;
+    slides[cur].classList.add('active');
+    dots[cur].style.width='28px';dots[cur].style.borderRadius='4px';dots[cur].style.background='#0ea5e9';
+  }
+  function nextSlide(){clearInterval(timer);showSlide(cur+1);startTimer();}
+  function prevSlide(){clearInterval(timer);showSlide(cur-1);startTimer();}
+  function goSlide(n){clearInterval(timer);showSlide(n);startTimer();}
+  function startTimer(){timer=setInterval(()=>showSlide(cur+1),5000);}
+  showSlide(0);startTimer();
+
+  // ── FADE OBSERVER ──
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});},{threshold:0.1});
+  document.querySelectorAll('.fade-up,.fade-left,.fade-right').forEach(el=>obs.observe(el));
+
+  // ── LOGIN TABS ──
+  function switchTab(tab){
+    const pBtn=document.getElementById('tab-parent');
+    const sBtn=document.getElementById('tab-staff');
+    if(tab==='parent'){
+      pBtn.style.background='linear-gradient(135deg,#0ea5e9,#1e3a8a)';pBtn.style.color='#fff';
+      sBtn.style.background='transparent';sBtn.style.color='rgba(255,255,255,0.5)';
+    }else{
+      sBtn.style.background='linear-gradient(135deg,#0ea5e9,#1e3a8a)';sBtn.style.color='#fff';
+      pBtn.style.background='transparent';pBtn.style.color='rgba(255,255,255,0.5)';
+    }
+  }
+</script>
+</body>
+</html>
