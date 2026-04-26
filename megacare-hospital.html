@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mega Care Hospital — Making Life Better</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'deep':      '#020b18',
+            'dark':      '#041020',
+            'mid':       '#071830',
+            'navy':      '#0a2040',
+            'blue':      '#0369a1',
+            'blue-mid':  '#0284c7',
+            'blue-light':'#38bdf8',
+            'cyan':      '#06b6d4',
+            'cyan-light':'#67e8f9',
+            'emerald':   '#10b981',
+            'white-dim': 'rgba(255,255,255,0.65)',
+            'muted':     '#64748b',
+          },
+          fontFamily: {
+            display: ['Fraunces','serif'],
+            body:    ['Manrope','sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Manrope',sans-serif;background:#020b18;color:#fff;overflow-x:hidden;}
+
+    /* GRADIENT TEXT */
+    .text-blue-grad{background:linear-gradient(135deg,#38bdf8,#06b6d4,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .text-white-grad{background:linear-gradient(135deg,#ffffff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* HERO BG */
+    .hero-bg{
+      background:
+        radial-gradient(ellipse at 0% 50%,rgba(3,105,161,0.5) 0%,transparent 55%),
+        radial-gradient(ellipse at 100% 20%,rgba(6,182,212,0.2) 0%,transparent 50%),
+        radial-gradient(ellipse at 50% 100%,rgba(2,11,24,0.95) 0%,transparent 60%),
+        linear-gradient(160deg,#020b18 0%,#041020 35%,#071830 65%,#0a2040 100%);
+    }
+
+    /* GRID */
+    .grid-bg{background-image:linear-gradient(rgba(56,189,248,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,0.03) 1px,transparent 1px);background-size:55px 55px;}
+
+    /* GLASS */
+    .glass{background:rgba(255,255,255,0.03);border:1px solid rgba(56,189,248,0.12);border-radius:20px;backdrop-filter:blur(10px);transition:all 0.4s;}
+    .glass:hover{border-color:rgba(56,189,248,0.35);box-shadow:0 20px 60px rgba(0,0,0,0.4),0 0 40px rgba(6,182,212,0.06);}
+
+    /* DIVIDER */
+    .blue-line{width:50px;height:3px;background:linear-gradient(90deg,#0369a1,#38bdf8);border-radius:2px;margin:1rem 0;}
+    .blue-line-c{margin:1rem auto;}
+
+    /* BUTTONS */
+    .btn-main{background:linear-gradient(135deg,#0369a1,#0284c7);color:#fff;padding:0.9rem 2rem;border-radius:50px;font-weight:600;font-size:0.88rem;text-decoration:none;transition:all 0.3s;display:inline-block;letter-spacing:0.03em;border:none;cursor:pointer;font-family:'Manrope',sans-serif;}
+    .btn-main:hover{box-shadow:0 0 30px rgba(3,105,161,0.5);transform:translateY(-2px);}
+    .btn-outline{background:transparent;color:#fff;padding:0.9rem 2rem;border-radius:50px;font-size:0.88rem;text-decoration:none;transition:all 0.3s;display:inline-block;border:1px solid rgba(255,255,255,0.25);}
+    .btn-outline:hover{border-color:#38bdf8;color:#38bdf8;transform:translateY(-2px);}
+    .btn-cyan{background:linear-gradient(135deg,#06b6d4,#38bdf8);color:#020b18;padding:0.9rem 2rem;border-radius:50px;font-weight:700;font-size:0.88rem;text-decoration:none;transition:all 0.3s;display:inline-block;border:none;cursor:pointer;font-family:'Manrope',sans-serif;}
+    .btn-cyan:hover{box-shadow:0 0 30px rgba(6,182,212,0.5);transform:translateY(-2px);}
+
+    /* SECTION TAG */
+    .sec-tag{font-family:'Manrope',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#38bdf8;margin-bottom:0.8rem;display:block;}
+
+    /* NAV */
+    .nav-bg{background:rgba(2,11,24,0.97);backdrop-filter:blur(20px);box-shadow:0 4px 30px rgba(0,0,0,0.4);}
+
+    /* MOBILE MENU */
+    #mob-menu{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+    #mob-menu.open{max-height:500px;}
+
+    /* FADE */
+    .fade-up{opacity:0;transform:translateY(35px);transition:opacity 0.8s ease,transform 0.8s ease;}
+    .fade-up.visible{opacity:1;transform:translateY(0);}
+    .fade-left{opacity:0;transform:translateX(-35px);transition:opacity 0.8s ease,transform 0.8s ease;}
+    .fade-left.visible{opacity:1;transform:translateX(0);}
+    .fade-right{opacity:0;transform:translateX(35px);transition:opacity 0.8s ease,transform 0.8s ease;}
+    .fade-right.visible{opacity:1;transform:translateX(0);}
+
+    /* PULSE */
+    .pulse-dot{width:9px;height:9px;border-radius:50%;background:#10b981;animation:pdot 2s ease-in-out infinite;}
+    @keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.5);}50%{box-shadow:0 0 0 8px rgba(16,185,129,0);}}
+
+    /* SCROLL LINE */
+    .scroll-line{width:1px;height:48px;background:linear-gradient(180deg,#38bdf8,transparent);animation:sline 2s ease-in-out infinite;}
+    @keyframes sline{0%,100%{opacity:0.3;transform:scaleY(0.7);}50%{opacity:1;transform:scaleY(1);}}
+
+    /* TYPEWRITER */
+    .tw{border-right:3px solid #38bdf8;padding-right:3px;animation:tw-blink 0.8s step-end infinite;}
+    @keyframes tw-blink{0%,100%{border-color:#38bdf8;}50%{border-color:transparent;}}
+
+    /* SERVICE CARD TOP LINE */
+    .svc-card{position:relative;overflow:hidden;}
+    .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0369a1,#38bdf8,#06b6d4);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+    .svc-card:hover::before{transform:scaleX(1);}
+
+    /* STAT TOP */
+    .stat-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0369a1,#06b6d4);}
+
+    /* FLOAT */
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    .float-a{animation:float 4s ease-in-out infinite;}
+    .float-b{animation:float 4s ease-in-out infinite 1.3s;}
+    .float-c{animation:float 4s ease-in-out infinite 2.6s;}
+
+    /* TREATMENT CARD */
+    .treat-card{position:relative;overflow:hidden;border-radius:20px;}
+    .treat-card img{transition:transform 0.6s ease;}
+    .treat-card:hover img{transform:scale(1.05);}
+    .treat-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,11,24,0.2) 0%,rgba(2,11,24,0.9) 100%);}
+
+    @keyframes pulseRing{0%,100%{transform:scale(1);opacity:0.5;}50%{transform:scale(1.06);opacity:1;}}
+
+    /* CROSS ICON BG */
+    .cross-bg{background:linear-gradient(135deg,#0369a1,#06b6d4);}
+
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:#020b18;}
+    ::-webkit-scrollbar-thumb{background:#0369a1;border-radius:2px;}
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════ TOP BAR ══════════════════════ -->
+<div class="hidden md:flex items-center justify-between px-12 py-2.5 text-xs" style="background:linear-gradient(90deg,#041020,#071830);border-bottom:1px solid rgba(56,189,248,0.08);">
+  <div class="flex items-center gap-6 text-white/40">
+    <span><i class="fa-solid fa-phone text-blue-light mr-2"></i>+234 807 7021 401</span>
+    <span><i class="fa-solid fa-envelope text-blue-light mr-2"></i>info@megacarehospital.com</span>
+    <span><i class="fa-solid fa-clock text-blue-light mr-2"></i>Mon–Sat: 11:00 – 21:00</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="pulse-dot"></div>
+    <span class="text-emerald" style="font-size:0.7rem;letter-spacing:0.1em;">EMERGENCY AVAILABLE 24/7</span>
+  </div>
+</div>
+
+<!-- ══════════════════════ NAV ══════════════════════ -->
+<nav id="navbar" class="sticky top-0 z-50 px-6 md:px-12 py-4 nav-bg" style="border-bottom:1px solid rgba(56,189,248,0.08);">
+  <div class="flex items-center justify-between">
+
+    <!-- LOGO -->
+    <a href="#" class="flex items-center gap-3 no-underline">
+      <div class="w-12 h-13 rounded-xl cross-bg flex items-center justify-center" style="box-shadow:0 0 20px rgba(3,105,161,0.4);">
+        <img src="assest/mgclogo.png" alt="logo" class="w-18 h-18 object-contain">
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;background:linear-gradient(135deg,#38bdf8,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;">Mega Care</div>
+        <div style="font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:#38bdf8;font-family:'Manrope',sans-serif;">Hospital</div>
+      </div>
+    </a>
+
+    <!-- DESKTOP -->
+    <ul class="hidden md:flex gap-8 list-none items-center">
+      <li><a href="#home"      class="text-white/70 no-underline text-sm tracking-wide transition-colors hover:text-blue-light">Home</a></li>
+      <li><a href="#about"     class="text-white/70 no-underline text-sm tracking-wide transition-colors hover:text-blue-light">About</a></li>
+      <li><a href="#services"  class="text-white/70 no-underline text-sm tracking-wide transition-colors hover:text-blue-light">Services</a></li>
+      <li><a href="#treatment" class="text-white/70 no-underline text-sm tracking-wide transition-colors hover:text-blue-light">Treatment</a></li>
+      <li><a href="#contact"   class="text-white/70 no-underline text-sm tracking-wide transition-colors hover:text-blue-light">Contact</a></li>
+    </ul>
+
+    <a href="#contact" class="hidden md:inline-block btn-cyan" style="padding:0.55rem 1.5rem;font-size:0.82rem;">Book Appointment</a>
+
+    <!-- HAMBURGER -->
+    <button id="hbg" class="md:hidden flex flex-col gap-1.5 p-2 bg-transparent border-none cursor-pointer" onclick="toggleNav()">
+      <span id="hb1" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      <span id="hb2" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      <span id="hb3" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+    </button>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="mob-menu" style="background:rgba(4,16,32,0.99);border-top:1px solid rgba(56,189,248,0.1);margin-top:0.8rem;border-radius:14px;">
+    <ul class="list-none flex flex-col px-6 py-5 gap-4">
+      <li><a href="#home"      onclick="toggleNav()" class="text-white/70 no-underline text-sm block py-1 hover:text-blue-light transition-colors">Home</a></li>
+      <li><a href="#about"     onclick="toggleNav()" class="text-white/70 no-underline text-sm block py-1 hover:text-blue-light transition-colors">About</a></li>
+      <li><a href="#services"  onclick="toggleNav()" class="text-white/70 no-underline text-sm block py-1 hover:text-blue-light transition-colors">Services</a></li>
+      <li><a href="#treatment" onclick="toggleNav()" class="text-white/70 no-underline text-sm block py-1 hover:text-blue-light transition-colors">Treatment</a></li>
+      <li><a href="#contact"   onclick="toggleNav()" class="text-white/70 no-underline text-sm block py-1 hover:text-blue-light transition-colors">Contact</a></li>
+      <li><a href="#contact"   onclick="toggleNav()" class="btn-cyan inline-block" style="padding:0.6rem 1.5rem;font-size:0.82rem;">Book Appointment</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<section id="home" class="relative min-h-screen flex items-center overflow-hidden hero-bg grid-bg">
+  <div class="absolute w-[500px] h-[500px] rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(3,105,161,0.18) 0%,transparent 70%);top:-80px;right:-80px;"></div>
+  <div class="absolute w-96 h-96 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(6,182,212,0.1) 0%,transparent 70%);bottom:0;left:-60px;"></div>
+
+  <div class="relative z-10 w-full px-6 md:px-16 py-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+      <!-- LEFT -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style="background:rgba(3,105,161,0.12);border:1px solid rgba(56,189,248,0.25);">
+          <div class="pulse-dot"></div>
+          <span style="font-size:0.72rem;letter-spacing:0.12em;color:#38bdf8;text-transform:uppercase;font-family:'Manrope',sans-serif;">World Class Medical Care</span>
+        </div>
+
+        <h1 class="font-display font-bold leading-none mb-6" style="font-size:clamp(2.8rem,6vw,5rem);">
+          Your Health,<br/>
+          Our <span class="text-blue-grad">Greatest</span><br/>
+          <span id="tw-el" class="tw text-white"></span>
+        </h1>
+
+        <p class="leading-relaxed mb-8 text-sm" style="max-width:480px;color:rgba(255,255,255,0.55);">
+          Mega Care Hospital is committed to delivering world-class medical services with excellence, compassion and cutting-edge technology — leaving every patient a <em style="color:#38bdf8;">Happy Satisfied Client.</em>
+        </p>
+
+        <div class="flex gap-4 flex-wrap mb-12">
+          <a href="#contact" class="btn-cyan">Book Appointment →</a>
+          <a href="#about"   class="btn-outline">Learn More</a>
+        </div>
+
+        <!-- QUICK CONTACT -->
+        <div class="flex items-center gap-4 p-4 rounded-2xl" style="background:rgba(3,105,161,0.1);border:1px solid rgba(56,189,248,0.15);max-width:360px;">
+          <div class="w-12 h-12 rounded-xl cross-bg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-phone text-white"></i>
+          </div>
+          <div>
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase;">Emergency / Call Us</div>
+            <a href="tel:+2348077021401" class="text-white font-bold text-base no-underline hover:text-blue-light transition-colors" style="font-family:'Fraunces',serif;">+234 807 7021 401</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT IMAGE STACK -->
+      <div class="relative mt-10 md:mt-0" style="height:420px;">
+        <!-- main image -->
+        <div class="float-a absolute" style="width:58%;height:85%;top:0;right:0;border-radius:24px;overflow:hidden;border:2px solid rgba(56,189,248,0.25);box-shadow:0 30px 80px rgba(0,0,0,0.6);">
+         <img src="assest/mg1.jpeg" alt="Hospital" style="width:100%;height:100%;object-fit:cover;">
+
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(2,11,24,0.8) 100%);"></div>
+        </div>
+        <!-- small card 1 -->
+        <div class="float-b absolute glass" style="width:42%;bottom:0;left:0;border-radius:18px;overflow:hidden;height:55%;">
+          <img src="assest/mg2.jpg" alt="Doctor" style="width:100%;height:100%;object-fit:cover;">
+
+        </div>
+        <!-- STAT BADGE -->
+        <div class="absolute" style="bottom:42%;left:35%;background:linear-gradient(135deg,#0369a1,#0284c7);border-radius:16px;padding:1rem 1.2rem;box-shadow:0 10px 40px rgba(3,105,161,0.5);border:1px solid rgba(56,189,248,0.3);">
+          <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1.6rem;line-height:1;">98%</div>
+          <div style="font-size:0.6rem;letter-spacing:0.1em;color:rgba(255,255,255,0.7);font-family:'Manrope',sans-serif;text-transform:uppercase;">Patient Satisfaction</div>
+        </div>
+        <!-- EXPERIENCE BADGE -->
+        <div class="float-c absolute" style="top:10px;left:10px;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.3);border-radius:14px;padding:0.8rem 1rem;backdrop-filter:blur(10px);">
+          <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1.4rem;line-height:1;color:#38bdf8;">10+</div>
+          <div style="font-size:0.58rem;letter-spacing:0.1em;color:rgba(255,255,255,0.5);font-family:'Manrope',sans-serif;text-transform:uppercase;">Years of Care</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ STATS ══════════════════════ -->
+<div class="py-10 px-6 md:px-16 fade-up" style="background:linear-gradient(135deg,rgba(3,105,161,0.25),rgba(7,24,48,0.6));border-top:1px solid rgba(56,189,248,0.08);border-bottom:1px solid rgba(56,189,248,0.08);">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto text-center">
+    <div class="stat-top relative glass p-5"><div class="font-display font-bold text-3xl text-blue-grad mb-1">5,000+</div><div class="text-white/40 text-xs tracking-wider">Patients Treated</div></div>
+    <div class="stat-top relative glass p-5"><div class="font-display font-bold text-3xl text-blue-grad mb-1">50+</div><div class="text-white/40 text-xs tracking-wider">Specialist Doctors</div></div>
+    <div class="stat-top relative glass p-5"><div class="font-display font-bold text-3xl text-blue-grad mb-1">10+</div><div class="text-white/40 text-xs tracking-wider">Years of Excellence</div></div>
+    <div class="stat-top relative glass p-5"><div class="font-display font-bold text-3xl text-blue-grad mb-1">24/7</div><div class="text-white/40 text-xs tracking-wider">Emergency Care</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ ABOUT ══════════════════════ -->
+<section id="about" class="py-20 px-6 md:px-16 grid-bg fade-up overflow-x-hidden" style="background:linear-gradient(160deg,#020b18 0%,#041020 50%,#020b18 100%);">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+
+    <!-- LEFT -->
+    <div class="fade-left relative" style="height:420px;">
+      <div style="position:absolute;top:0;left:0;width:65%;height:78%;border-radius:24px;overflow:hidden;border:2px solid rgba(56,189,248,0.2);box-shadow:0 30px 80px rgba(0,0,0,0.5);background:linear-gradient(135deg,#041020,#071830);">
+        <img src="assest/mg4.jpg" alt="Doctor" style="width:100%;height:100%;object-fit:cover;">
+
+      </div>
+      <div style="position:absolute;bottom:0;right:0;width:50%;height:52%;border-radius:20px;overflow:hidden;border:2px solid rgba(6,182,212,0.25);box-shadow:0 20px 60px rgba(0,0,0,0.5);background:linear-gradient(135deg,#071830,#0a2040);">
+        <img src="assest/mg3.jpg" alt="Health" style="width:100%;height:100%;object-fit:cover;">
+
+      </div>
+      <!-- BADGE -->
+      <div class="absolute" style="bottom:28%;left:52%;transform:translate(-50%,50%);background:linear-gradient(135deg,#0369a1,#06b6d4);border-radius:16px;padding:1rem 1.3rem;text-align:center;border:1px solid rgba(56,189,248,0.3);box-shadow:0 10px 40px rgba(3,105,161,0.4);">
+        <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1.5rem;">ISO</div>
+        <div style="font-size:0.58rem;letter-spacing:0.1em;color:rgba(255,255,255,0.7);">CERTIFIED</div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="fade-right">
+      <span class="sec-tag">✦ About Us</span>
+      <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(2rem,4vw,3rem);">Committed to <span class="text-blue-grad">Excellence</span> in Healthcare</h2>
+      <div class="blue-line"></div>
+      <p class="text-sm leading-relaxed mb-5" style="color:rgba(255,255,255,0.55);">
+        Mega Care Hospital has built a trusted brand in the medical field, powered by state-of-the-art equipment and a team of highly competent medical professionals who deliver exceptional care with compassion.
+      </p>
+      <p class="text-sm leading-relaxed mb-8" style="color:rgba(255,255,255,0.55);">
+        We are involved in the overall wellbeing of our patients - going beyond treatment to build lasting quality relationships that make every visit an unforgettable experience.
+      </p>
+
+      <div class="space-y-3 mb-8">
+        <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-lg cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-check text-white text-xs"></i></div><span class="text-sm" style="color:rgba(255,255,255,0.65);">State-of-the-art medical equipment</span></div>
+        <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-lg cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-check text-white text-xs"></i></div><span class="text-sm" style="color:rgba(255,255,255,0.65);">Constantly trained and exposed medical staff</span></div>
+        <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-lg cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-check text-white text-xs"></i></div><span class="text-sm" style="color:rgba(255,255,255,0.65);">Patient-centred care and individual attention</span></div>
+        <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-lg cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-check text-white text-xs"></i></div><span class="text-sm" style="color:rgba(255,255,255,0.65);">24/7 emergency and specialist availability</span></div>
+      </div>
+
+      <a href="#contact" class="btn-main">Book an Appointment →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SERVICES ══════════════════════ -->
+<section id="services" class="py-20 px-6 md:px-16 fade-up" style="background:linear-gradient(160deg,#041020 0%,#071830 50%,#041020 100%);">
+  <div class="text-center mb-14 max-w-2xl mx-auto">
+    <span class="sec-tag">✦ What We Do</span>
+    <h2 class="font-display font-bold" style="font-size:clamp(2rem,4vw,3rem);">Our Medical <span class="text-blue-grad">Services</span></h2>
+    <div class="blue-line blue-line-c"></div>
+    <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Services that will leave you a <em style="color:#38bdf8;">Happy Satisfied Client</em> - delivered by specialists committed to your wellbeing.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl cross-bg flex items-center justify-center mb-5" style="box-shadow:0 5px 20px rgba(3,105,161,0.4);">
+        <i class="fa-solid fa-heart-pulse text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Internal Medicine</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Specialist consultants in Cardiology, Endocrinology, Gastroenterology, Pulmonology, Nephrology and more.</p>
+    </div>
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#06b6d4,#0369a1);box-shadow:0 5px 20px rgba(6,182,212,0.3);">
+        <i class="fa-solid fa-baby text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Neo-Natal & Paediatric</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">State-of-the-art incubators, photo therapies, exchange blood transfusion and daily Paediatric Clinics.</p>
+    </div>
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#0369a1,#38bdf8);box-shadow:0 5px 20px rgba(3,105,161,0.4);">
+        <i class="fa-solid fa-person-pregnant text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Obstetrics & Gynaecology</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Advanced delivery and feto-maternal care with experienced O&G consultants and trained midwives.</p>
+    </div>
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#06b6d4,#0284c7);box-shadow:0 5px 20px rgba(6,182,212,0.3);">
+        <i class="fa-solid fa-brain text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Neurosurgical Services</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Specialist management of brain tumours, spinal cord injuries, neck pain, head injuries and more.</p>
+    </div>
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#0369a1,#06b6d4);box-shadow:0 5px 20px rgba(3,105,161,0.4);">
+        <i class="fa-solid fa-eye text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Eye Care</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Comprehensive eye examinations, treatment of eye conditions, and corrective procedures by specialist ophthalmologists.</p>
+    </div>
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#0284c7,#38bdf8);box-shadow:0 5px 20px rgba(2,132,199,0.3);">
+        <i class="fa-solid fa-bone text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Orthopaedics</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Treatment of bone fractures, joint replacements, sports injuries and musculoskeletal conditions.</p>
+    </div>
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#06b6d4,#0369a1);box-shadow:0 5px 20px rgba(6,182,212,0.3);">
+        <i class="fa-solid fa-syringe text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Laboratory Services</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Comprehensive diagnostic tests, blood work, imaging and pathology with rapid turnaround results.</p>
+    </div>
+
+    <div class="svc-card glass p-6">
+      <div class="w-12 h-12 rounded-xl cross-bg flex items-center justify-center mb-5" style="box-shadow:0 5px 20px rgba(3,105,161,0.4);">
+        <i class="fa-solid fa-ambulance text-white text-lg"></i>
+      </div>
+      <h3 class="font-display font-semibold text-lg mb-3">Emergency Care</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);">Round-the-clock emergency response with fully equipped trauma units and rapid specialist deployment.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ TREATMENT ══════════════════════ -->
+<section id="treatment" class="py-20 px-6 md:px-16 fade-up grid-bg" style="background:linear-gradient(160deg,#020b18,#041020);">
+  <div class="text-center mb-14 max-w-2xl mx-auto">
+    <span class="sec-tag">✦ How We Care</span>
+    <h2 class="font-display font-bold" style="font-size:clamp(2rem,4vw,3rem);">Our Approach to <span class="text-blue-grad">Treatment</span></h2>
+    <div class="blue-line blue-line-c"></div>
+    <p class="text-sm" style="color:rgba(255,255,255,0.45);">Three core pillars that define the Mega Care experience.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+
+    <div class="treat-card glass overflow-hidden" style="min-height:360px;">
+      <div class="w-full h-48">
+  <img src="assest/mg5.jpg" alt="Cost" style="width:100%;height:100%;object-fit:cover;">
+</div>
+
+      <div class="treat-overlay" style="position:relative;background:none;"></div>
+      <div class="p-6">
+        <div class="w-10 h-10 rounded-xl cross-bg flex items-center justify-center mb-4"><i class="fa-solid fa-scale-balanced text-white text-sm"></i></div>
+        <h3 class="font-display font-semibold text-xl mb-3">Transparent & Fair Cost</h3>
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(255,255,255,0.5);">We believe quality healthcare should be accessible. Our transparent pricing ensures you know exactly what to expect — no hidden charges, no surprises.</p>
+        <a href="#contact" class="text-blue-light text-xs tracking-widest uppercase no-underline hover:text-cyan transition-colors">Learn More →</a>
+      </div>
+    </div>
+
+    <div class="treat-card glass overflow-hidden md:mt-8" style="min-height:360px;margin-top:0;">
+
+      <div class="w-full h-48">
+  <img src="assest/mg6.png" alt="Technology" style="width:100%;height:100%;object-fit:cover;">
+</div>
+
+      <div class="p-6">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#06b6d4,#0369a1);"><i class="fa-solid fa-microchip text-white text-sm"></i></div>
+        <h3 class="font-display font-semibold text-xl mb-3">Advanced Technology</h3>
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(255,255,255,0.5);">We stay at the forefront of medical innovation. Our facilities are equipped with the latest diagnostic and treatment technologies for better outcomes.</p>
+        <a href="#contact" class="text-blue-light text-xs tracking-widest uppercase no-underline hover:text-cyan transition-colors">Learn More →</a>
+      </div>
+    </div>
+
+    <div class="treat-card glass overflow-hidden" style="min-height:360px;">
+      <div class="w-full h-48">
+  <img src="assest/mg7.jpg" alt="Care" style="width:100%;height:100%;object-fit:cover;">
+</div>
+
+      <div class="p-6">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#0369a1,#38bdf8);"><i class="fa-solid fa-hand-holding-heart text-white text-sm"></i></div>
+        <h3 class="font-display font-semibold text-xl mb-3">Personalised Care</h3>
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(255,255,255,0.5);">Our Care Team uses a patient-first approach. Knowing our patients allows us to develop individualised treatment plans tailored to your unique health journey.</p>
+        <a href="#contact" class="text-blue-light text-xs tracking-widest uppercase no-underline hover:text-cyan transition-colors">Learn More →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ CTA STRIP ══════════════════════ -->
+<div class="py-14 px-6 md:px-16 fade-up" style="background:linear-gradient(135deg,#0369a1,#0284c7,#06b6d4);">
+  <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <div>
+      <h3 class="font-display font-bold text-2xl md:text-3xl mb-2">Need Medical Help Right Now?</h3>
+      <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;">Our specialist team is available 24/7 for emergencies and appointments.</p>
+    </div>
+    <div class="flex gap-4 flex-wrap">
+      <a href="tel:+2348077021401" class="btn-outline" style="border-color:rgba(255,255,255,0.5);white-space:nowrap;"><i class="fa-solid fa-phone mr-2"></i>Call Now</a>
+      <a href="#contact" style="background:#fff;color:#0369a1;padding:0.9rem 2rem;border-radius:50px;font-weight:700;font-size:0.88rem;text-decoration:none;transition:all 0.3s;white-space:nowrap;" onmouseenter="this.style.background='#f0f9ff'" onmouseleave="this.style.background='#fff'">Book Appointment →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ CONTACT ══════════════════════ -->
+<section id="contact" class="py-20 px-6 md:px-16 fade-up overflow-x-hidden" style="background:linear-gradient(160deg,#041020,#020b18);">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+
+    <!-- LEFT -->
+    <div class="fade-left">
+      <span class="sec-tag">✦ Get In Touch</span>
+      <h2 class="font-display font-bold leading-tight mb-4" style="font-size:clamp(2rem,4vw,3rem);">Book an <span class="text-blue-grad">Appointment</span></h2>
+      <div class="blue-line"></div>
+      <p class="text-sm leading-relaxed mb-8" style="color:rgba(255,255,255,0.5);">Fill the form and our team will reach out to confirm your appointment within 24 hours. Walk-ins are also welcome.</p>
+
+      <div class="space-y-5">
+        <div class="flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-phone text-white text-sm"></i></div>
+          <div><div class="text-xs text-white/40 mb-0.5 tracking-wider uppercase">Phone</div><a href="tel:+2348077021401" class="text-white text-sm no-underline hover:text-blue-light transition-colors">+234 807 7021 401</a></div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-envelope text-white text-sm"></i></div>
+          <div><div class="text-xs text-white/40 mb-0.5 tracking-wider uppercase">Email</div><a href="mailto:info@megacarehospital.com" class="text-white text-sm no-underline hover:text-blue-light transition-colors">info@megacarehospital.com</a></div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-location-dot text-white text-sm"></i></div>
+          <div><div class="text-xs text-white/40 mb-0.5 tracking-wider uppercase">Location</div><span class="text-white text-sm">45 Uwa St, Ogida St, off Mobile Crescent, off Upper Siluko Road, Okhokhugbo, Benin City 300271, Edo</span></div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl cross-bg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-clock text-white text-sm"></i></div>
+          <div><div class="text-xs text-white/40 mb-0.5 tracking-wider uppercase">Hours</div><span class="text-white text-sm">Mon–Sat: 11:00 – 21:00 | Emergency: 24/7</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="fade-right glass p-8">
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <input type="text" placeholder="First Name" class="col-span-1 bg-transparent text-white text-sm outline-none py-3.5 px-4 font-body" style="background:rgba(255,255,255,0.04);border:1px solid rgba(56,189,248,0.15);border-radius:12px;" onfocus="this.style.borderColor='rgba(56,189,248,0.5)'" onblur="this.style.borderColor='rgba(56,189,248,0.15)'"/>
+        <input type="text" placeholder="Last Name"  class="col-span-1 bg-transparent text-white text-sm outline-none py-3.5 px-4 font-body" style="background:rgba(255,255,255,0.04);border:1px solid rgba(56,189,248,0.15);border-radius:12px;" onfocus="this.style.borderColor='rgba(56,189,248,0.5)'" onblur="this.style.borderColor='rgba(56,189,248,0.15)'"/>
+      </div>
+      <div class="mb-4"><input type="tel"   placeholder="Phone Number"   class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-4 font-body" style="background:rgba(255,255,255,0.04);border:1px solid rgba(56,189,248,0.15);border-radius:12px;" onfocus="this.style.borderColor='rgba(56,189,248,0.5)'" onblur="this.style.borderColor='rgba(56,189,248,0.15)'"/></div>
+      <div class="mb-4"><input type="email"  placeholder="Email Address"  class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-4 font-body" style="background:rgba(255,255,255,0.04);border:1px solid rgba(56,189,248,0.15);border-radius:12px;" onfocus="this.style.borderColor='rgba(56,189,248,0.5)'" onblur="this.style.borderColor='rgba(56,189,248,0.15)'"/></div>
+      <div class="mb-4">
+        <select class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-4 font-body gold-select" style="background:#041020;border:1px solid rgba(56,189,248,0.15);border-radius:12px;cursor:pointer;">
+          <option style="background:#041020;">Select Department</option>
+          <option style="background:#041020;">Internal Medicine</option>
+          <option style="background:#041020;">Neo-Natal / Paediatric</option>
+          <option style="background:#041020;">Obstetrics & Gynaecology</option>
+          <option style="background:#041020;">Neurosurgical Services</option>
+          <option style="background:#041020;">Emergency Care</option>
+          <option style="background:#041020;">Laboratory Services</option>
+          <option style="background:#041020;">Other</option>
+        </select>
+      </div>
+      <div class="mb-4"><input type="date" class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-4 font-body" style="background:rgba(255,255,255,0.04);border:1px solid rgba(56,189,248,0.15);border-radius:12px;" onfocus="this.style.borderColor='rgba(56,189,248,0.5)'" onblur="this.style.borderColor='rgba(56,189,248,0.15)'"/></div>
+      <div class="mb-5"><textarea placeholder="Describe your symptoms or reason for visit..." rows="3" class="w-full bg-transparent text-white text-sm outline-none py-3.5 px-4 font-body resize-none" style="background:rgba(255,255,255,0.04);border:1px solid rgba(56,189,248,0.15);border-radius:12px;" onfocus="this.style.borderColor='rgba(56,189,248,0.5)'" onblur="this.style.borderColor='rgba(56,189,248,0.15)'"></textarea></div>
+      <button class="btn-cyan w-full border-none cursor-pointer text-center" style="font-family:'Manrope',sans-serif;">Book Appointment →</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer style="background:#010810;border-top:1px solid rgba(56,189,248,0.08);" class="px-6 md:px-16 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+
+    <div class="md:col-span-2">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-xl cross-bg flex items-center justify-center"><i class="fa-solid fa-plus text-white"></i></div>
+        <div>
+          <div style="font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;background:linear-gradient(135deg,#38bdf8,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Mega Care Hospital</div>
+          <div style="font-size:0.58rem;letter-spacing:0.15em;color:#38bdf8;text-transform:uppercase;">Happy Satisfied Client</div>
+        </div>
+      </div>
+      <p class="text-xs leading-relaxed mb-5" style="color:rgba(255,255,255,0.35);max-width:300px;">Delivering world-class medical care with excellence, compassion and state-of-the-art technology.</p>
+      <div class="flex gap-3">
+        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(56,189,248,0.4)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-brands fa-facebook-f text-xs text-muted"></i></a>
+        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(56,189,248,0.4)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-brands fa-instagram text-xs text-muted"></i></a>
+        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(56,189,248,0.4)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-brands fa-x-twitter text-xs text-muted"></i></a>
+        <a href="https://wa.me/2348077021401" class="w-9 h-9 rounded-xl flex items-center justify-center no-underline transition-all duration-300" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onmouseenter="this.style.borderColor='rgba(56,189,248,0.4)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'"><i class="fa-brands fa-whatsapp text-xs text-muted"></i></a>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-tag mb-4">Quick Links</div>
+      <div class="space-y-2">
+        <a href="#home"      class="block text-white/40 text-xs no-underline hover:text-blue-light transition-colors">Home</a>
+        <a href="#about"     class="block text-white/40 text-xs no-underline hover:text-blue-light transition-colors">About Us</a>
+        <a href="#services"  class="block text-white/40 text-xs no-underline hover:text-blue-light transition-colors">Services</a>
+        <a href="#treatment" class="block text-white/40 text-xs no-underline hover:text-blue-light transition-colors">Treatment</a>
+        <a href="#contact"   class="block text-white/40 text-xs no-underline hover:text-blue-light transition-colors">Contact</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-tag mb-4">Business Hours</div>
+      <div class="space-y-1.5 text-xs" style="color:rgba(255,255,255,0.4);">
+        <div class="flex justify-between"><span>Monday – Friday</span><span class="text-blue-light">11:00 – 21:00</span></div>
+        <div class="flex justify-between"><span>Saturday</span><span class="text-blue-light">11:00 – 21:00</span></div>
+        <div class="flex justify-between"><span>Sunday</span><span class="text-white/30">Closed</span></div>
+        <div class="mt-3 p-2 rounded-lg text-center" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);">
+          <span style="color:#10b981;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;">Emergency: 24/7</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="text-center text-white/20 text-xs pt-6" style="border-top:1px solid rgba(255,255,255,0.05);">
+    © 2026 Mega Care Hospital. All rights reserved. — Making Life Better for Everyone.
+  </div>
+</footer>
+
+<script>
+  // NAV TOGGLE
+  function toggleNav(){
+    const m=document.getElementById('mob-menu');
+    const b1=document.getElementById('hb1'),b2=document.getElementById('hb2'),b3=document.getElementById('hb3');
+    const open=m.classList.contains('open');
+    if(open){m.classList.remove('open');b1.style.transform='none';b2.style.opacity='1';b3.style.transform='none';}
+    else{m.classList.add('open');b1.style.transform='translateY(8px) rotate(45deg)';b2.style.opacity='0';b3.style.transform='translateY(-8px) rotate(-45deg)';}
+  }
+
+  // TYPEWRITER
+  const words=['Priority.','Commitment.','Mission.','Promise.'];
+  let wi=0,ci=0,del=false;
+  function type(){
+    const el=document.getElementById('tw-el');if(!el)return;
+    const w=words[wi];
+    if(!del){el.textContent=w.substring(0,ci+1);ci++;if(ci===w.length){del=true;setTimeout(type,1800);return;}}
+    else{el.textContent=w.substring(0,ci-1);ci--;if(ci===0){del=false;wi=(wi+1)%words.length;}}
+    setTimeout(type,del?60:110);
+  }
+  type();
+
+  // FADE OBSERVER
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+  document.querySelectorAll('.fade-up,.fade-left,.fade-right').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
