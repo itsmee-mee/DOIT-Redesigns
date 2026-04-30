@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oga Urology Hospital – Advanced Urological Care</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50:  '#edfafa',
+              100: '#d5f5f6',
+              200: '#afecef',
+              300: '#7edce2',
+              400: '#16bdca',
+              500: '#0694a2',
+              600: '#047481',
+              700: '#036672',
+              800: '#05505c',
+              900: '#014451',
+            },
+            navy: {
+              50:  '#eef2ff',
+              100: '#e0e7ff',
+              700: '#1e3a5f',
+              800: '#162d4a',
+              900: '#0d1f35',
+            }
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+          backgroundImage: {
+            'hero-gradient':  'linear-gradient(135deg, #014451 0%, #036672 40%, #0694a2 75%, #16bdca 100%)',
+            'card-gradient':  'linear-gradient(160deg, #047481 0%, #0694a2 100%)',
+            'light-gradient': 'linear-gradient(135deg, #edfafa 0%, #d5f5f6 100%)',
+            'section-gradient':'linear-gradient(180deg, #ffffff 0%, #edfafa 100%)',
+            'dark-gradient':  'linear-gradient(135deg, #0d1f35 0%, #014451 100%)',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; }
+    h1,h2,h3 { font-family: 'Playfair Display', serif; }
+
+    /* ---- Navbar ---- */
+    #navbar {
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    #navbar.scrolled {
+      background: rgba(1, 68, 81, 0.97) !important;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    /* ---- Animations ---- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- Hero wave ---- */
+    .wave-divider svg { display: block; }
+
+    /* ---- Stat card shine ---- */
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    /* ---- Service card hover ---- */
+    .service-card {
+      transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s;
+    }
+    .service-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 24px 48px rgba(6,148,162,0.22);
+    }
+
+    /* ---- Doctor card ---- */
+    .doctor-card:hover .doctor-overlay {
+      opacity: 1;
+    }
+    .doctor-overlay {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* ---- Testimonial scroll ---- */
+    .testimonial-track {
+      display: flex;
+      gap: 1.5rem;
+      animation: scrollLeft 28s linear infinite;
+      width: max-content;
+    }
+    @keyframes scrollLeft {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .testimonial-track:hover { animation-play-state: paused; }
+
+    /* ---- Mobile menu ---- */
+    #mobile-menu {
+      transition: max-height 0.4s ease, opacity 0.3s;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+    #mobile-menu.open {
+      max-height: 480px;
+      opacity: 1;
+    }
+
+    /* ---- Pulse ring ---- */
+    .pulse-ring {
+      animation: pulse-ring 2.2s ease-out infinite;
+    }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(22,189,202,0.6); }
+      70%  { box-shadow: 0 0 0 18px rgba(22,189,202,0); }
+      100% { box-shadow: 0 0 0 0 rgba(22,189,202,0); }
+    }
+
+    /* ---- Gradient text ---- */
+    .gradient-text {
+      background: linear-gradient(90deg, #0694a2, #16bdca);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ---- FAQ accordion ---- */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .faq-answer.open { max-height: 300px; }
+    .faq-icon { transition: transform 0.3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ---- Appointment form ---- */
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #0694a2;
+      box-shadow: 0 0 0 3px rgba(6,148,162,0.18);
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-12 h-12 p-2 rounded-full bg-teal-400 flex items-center justify-center pulse-ring">
+          <img src="assest/Ogahlogo.png" alt="icon">
+        </div>
+        <span class="font-display font-bold text-xl text-white leading-none">
+          Ogah<span class="text-teal-300">Urology</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav links -->
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#services"     class="text-white/80 hover:text-teal-300 text-sm font-medium transition">Services</a>
+        <a href="#about"        class="text-white/80 hover:text-teal-300 text-sm font-medium transition">About Us</a>
+        <a href="#doctors"      class="text-white/80 hover:text-teal-300 text-sm font-medium transition">Doctors</a>
+        <a href="#why-us"       class="text-white/80 hover:text-teal-300 text-sm font-medium transition">Why Choose Us</a>
+        <a href="#testimonials" class="text-white/80 hover:text-teal-300 text-sm font-medium transition">Testimonials</a>
+        <a href="#faq"          class="text-white/80 hover:text-teal-300 text-sm font-medium transition">FAQ</a>
+        <a href="#contact"      class="text-white/80 hover:text-teal-300 text-sm font-medium transition">Contact</a>
+      </div>
+
+      <!-- CTA + Hamburger -->
+      <div class="flex items-center gap-3">
+        <a href="#appointment" class="hidden sm:inline-flex items-center gap-2 bg-teal-400 hover:bg-teal-300 text-navy-900 font-semibold text-sm px-5 py-2.5 rounded-full transition shadow-lg">
+          Book Appointment
+        </a>
+        <button id="hamburger" class="lg:hidden text-white p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu">
+          <svg id="ham-icon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="close-icon" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="lg:hidden bg-navy-900/97 border-t border-white/10">
+    <div class="px-5 py-4 flex flex-col gap-1">
+      <a href="#services"     class="text-white/80 hover:text-teal-300 py-2.5 border-b border-white/5 text-sm font-medium transition" onclick="closeMenu()">Services</a>
+      <a href="#about"        class="text-white/80 hover:text-teal-300 py-2.5 border-b border-white/5 text-sm font-medium transition" onclick="closeMenu()">About Us</a>
+      <a href="#doctors"      class="text-white/80 hover:text-teal-300 py-2.5 border-b border-white/5 text-sm font-medium transition" onclick="closeMenu()">Doctors</a>
+      <a href="#why-us"       class="text-white/80 hover:text-teal-300 py-2.5 border-b border-white/5 text-sm font-medium transition" onclick="closeMenu()">Why Choose Us</a>
+      <a href="#testimonials" class="text-white/80 hover:text-teal-300 py-2.5 border-b border-white/5 text-sm font-medium transition" onclick="closeMenu()">Testimonials</a>
+      <a href="#faq"          class="text-white/80 hover:text-teal-300 py-2.5 border-b border-white/5 text-sm font-medium transition" onclick="closeMenu()">FAQ</a>
+      <a href="#contact"      class="text-white/80 hover:text-teal-300 py-2.5 border-b border-white/5 text-sm font-medium transition" onclick="closeMenu()">Contact</a>
+      <a href="#appointment"  class="mt-3 bg-teal-400 hover:bg-teal-300 text-navy-900 font-semibold text-sm px-5 py-3 rounded-full text-center transition" onclick="closeMenu()">Book Appointment</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="relative min-h-screen bg-hero-gradient flex items-center overflow-hidden">
+
+  <!-- Background decorative circles -->
+  <div class="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-white/5 -translate-y-1/3 translate-x-1/3"></div>
+  <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-teal-400/10 translate-y-1/2 -translate-x-1/3"></div>
+  <div class="absolute top-1/2 left-1/2 w-[700px] h-[700px] rounded-full bg-teal-600/5 -translate-x-1/2 -translate-y-1/2"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 w-full">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Left content -->
+      <div>
+        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
+          <span class="w-2 h-2 bg-teal-300 rounded-full animate-pulse"></span>
+          <span class="text-white/90 text-xs font-medium tracking-wide">Nigeria's Premier Urology Centre</span>
+        </div>
+        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+          Expert<br/>
+          <span class="text-teal-300">Urological</span><br/>
+          Care You<br/>Trust
+        </h1>
+        <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-lg">
+          Ogah Urology Hospital delivers world class urological treatment with cutting edge technology, compassionate specialists, and patient centered care for every stage of your health journey.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#appointment" class="inline-flex items-center gap-2 bg-teal-400 hover:bg-teal-300 text-navy-900 font-bold px-8 py-4 rounded-full transition shadow-xl text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            Book Appointment
+          </a>
+          <a href="#services" class="inline-flex items-center gap-2 border-2 border-white/40 hover:border-teal-300 text-white hover:text-teal-300 font-semibold px-8 py-4 rounded-full transition text-sm">
+            Our Services
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Quick contact bar -->
+        <div class="flex flex-wrap gap-6 mt-12">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-white/50 text-xs">Emergency Line</p>
+              <p class="text-white font-semibold text-sm">+2348022240732</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-white/50 text-xs">Available</p>
+              <p class="text-white font-semibold text-sm">Mon–Fri: 9am–8pm  |  Sat: 9am–6pm</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: hero image collage -->
+      <div class="relative block">
+        <div class="relative w-full h-[540px]">
+          <!-- Main image -->
+          <div class="absolute top-0 right-0 w-[340px] h-[420px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
+            <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=680&q=80" alt="Doctor consulting patient" class="w-full h-full object-cover"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-teal-900/40 to-transparent"></div>
+          </div>
+          <!-- Secondary image -->
+          <div class="absolute bottom-0 left-0 w-[240px] h-[300px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
+            <img src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=480&q=80" alt="Medical equipment" class="w-full h-full object-cover"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-teal-900/40 to-transparent"></div>
+          </div>
+          <!-- Floating badge -->
+          <div class="absolute top-6 left-4 bg-white rounded-2xl px-4 py-3 shadow-xl">
+            <p class="text-teal-600 font-bold text-2xl">2000<span class="text-teal-400">+</span></p>
+            <p class="text-gray-500 text-xs font-medium">Successful Surgeries</p>
+          </div>
+          <!-- Floating badge 2 -->
+          <div class="absolute bottom-32 right-0 bg-teal-500 rounded-2xl px-4 py-3 shadow-xl text-white">
+            <p class="font-bold text-lg">98%</p>
+            <p class="text-teal-100 text-xs font-medium">Patient Satisfaction</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave divider -->
+  <div class="wave-divider absolute bottom-0 left-0 right-0">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     STATS BAR
+============================================================ -->
+<section class="bg-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <!-- Stat 1 -->
+      <div class="stat-card relative bg-hero-gradient rounded-2xl p-6 text-center overflow-hidden fade-up">
+        <p class="font-display font-bold text-4xl text-white">2000<span class="text-teal-300">+</span></p>
+        <p class="text-white/70 text-sm mt-1">Surgeries Performed</p>
+      </div>
+      <!-- Stat 2 -->
+      <div class="stat-card relative bg-card-gradient rounded-2xl p-6 text-center overflow-hidden fade-up" style="animation-delay:0.1s">
+        <p class="font-display font-bold text-4xl text-white">15<span class="text-teal-300">+</span></p>
+        <p class="text-white/70 text-sm mt-1">Expert Specialists</p>
+      </div>
+      <!-- Stat 3 -->
+      <div class="stat-card relative bg-hero-gradient rounded-2xl p-6 text-center overflow-hidden fade-up" style="animation-delay:0.2s">
+        <p class="font-display font-bold text-4xl text-white">98<span class="text-teal-300">%</span></p>
+        <p class="text-white/70 text-sm mt-1">Patient Satisfaction</p>
+      </div>
+      <!-- Stat 4 -->
+      <div class="stat-card relative bg-card-gradient rounded-2xl p-6 text-center overflow-hidden fade-up" style="animation-delay:0.3s">
+        <p class="font-display font-bold text-4xl text-white">20<span class="text-teal-300">+</span></p>
+        <p class="text-white/70 text-sm mt-1">Years of Excellence</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     ABOUT
+============================================================ -->
+<section id="about" class="bg-section-gradient py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Images -->
+      <div class="relative fade-up">
+        <div class="grid grid-cols-2 gap-4">
+          <img src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=500&q=80" alt="Hospital interior" class="rounded-2xl h-56 w-full object-cover shadow-lg"/>
+          <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&q=80" alt="Laboratory" class="rounded-2xl h-56 w-full object-cover shadow-lg mt-8"/>
+          <img src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=500&q=80" alt="Patient care" class="rounded-2xl h-56 w-full object-cover shadow-lg -mt-8"/>
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=500&q=80" alt="Medical team" class="rounded-2xl h-56 w-full object-cover shadow-lg"/>
+        </div>
+        <!-- Floating accent -->
+        <div class="absolute -bottom-6 -left-6 bg-teal-500 text-white rounded-2xl p-5 shadow-xl">
+          <p class="font-display font-bold text-3xl">20<span class="text-teal-200">+</span></p>
+          <p class="text-teal-100 text-xs mt-0.5">Years of Trust</p>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="fade-up">
+        <span class="inline-block text-teal-600 font-semibold text-sm tracking-widest uppercase mb-3">About Us</span>
+        <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
+          Dedicated to <span class="gradient-text">Excellence</span> in Urological Health
+        </h2>
+        <p class="text-gray-600 leading-relaxed mb-5">
+          Ogah Urology Hospital was founded with a single mission: to bring world class urological care to Nigeria and beyond. Our team of fellowship trained specialists combines decades of clinical experience with the latest minimally invasive surgical techniques.
+        </p>
+        <p class="text-gray-600 leading-relaxed mb-8">
+          From routine consultations to complex reconstructive procedures, we offer comprehensive urological services in a state of the art facility designed around patient comfort, safety, and exceptional outcomes.
+        </p>
+        <div class="flex flex-col gap-4 mb-10">
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <p class="text-gray-700 text-sm">Fellowship trained, internationally recognised urologists</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <p class="text-gray-700 text-sm">Cutting edge robotic and laparoscopic surgical suites</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <p class="text-gray-700 text-sm">Patient first culture with personalised treatment plans</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <p class="text-gray-700 text-sm">NHIS accredited and ISO certified facility</p>
+          </div>
+        </div>
+        <a href="#appointment" class="inline-flex items-center gap-2 bg-hero-gradient text-white font-semibold px-7 py-3.5 rounded-full shadow-lg hover:shadow-teal-300/30 transition text-sm">
+          Schedule a Consultation
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SERVICES
+============================================================ -->
+<section id="services" class="bg-white py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 fade-up">
+      <span class="inline-block text-teal-600 font-semibold text-sm tracking-widest uppercase mb-3">What We Offer</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900">Our <span class="gradient-text">Specialised</span> Services</h2>
+      <p class="text-gray-500 mt-4 max-w-xl mx-auto text-base">Comprehensive urological care covering the full spectrum of conditions, from diagnosis to advanced surgical intervention.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Service cards -->
+      <div class="service-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md fade-up">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://www.asterhospitals.in/sites/default/files/2023-06/prostate-health.jpg" alt="Prostate Care" class="w-full h-full object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent flex items-end p-5">
+            <span class="text-white font-display font-bold text-xl">Prostate Care</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-600 text-sm leading-relaxed">Comprehensive diagnosis and treatment of BPH, prostatitis, and prostate cancer using the latest minimally invasive techniques.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-teal-600 font-semibold text-sm mt-4 hover:gap-2 transition-all">Learn More <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="service-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md fade-up" style="animation-delay:0.1s">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80" alt="Kidney Stone Treatment" class="w-full h-full object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent flex items-end p-5">
+            <span class="text-white font-display font-bold text-xl">Kidney Stone Treatment</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-600 text-sm leading-relaxed">Advanced ESWL, ureteroscopy, and PCNL procedures to safely remove kidney stones with minimal recovery time.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-teal-600 font-semibold text-sm mt-4 hover:gap-2 transition-all">Learn More <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="service-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md fade-up" style="animation-delay:0.2s">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&q=80" alt="Bladder Disorders" class="w-full h-full object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent flex items-end p-5">
+            <span class="text-white font-display font-bold text-xl">Bladder Disorders</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-600 text-sm leading-relaxed">Expert management of bladder cancer, overactive bladder, and incontinence with evidence based treatment protocols.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-teal-600 font-semibold text-sm mt-4 hover:gap-2 transition-all">Learn More <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="service-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md fade-up" style="animation-delay:0.3s">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&q=80" alt="Male Fertility" class="w-full h-full object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent flex items-end p-5">
+            <span class="text-white font-display font-bold text-xl">Male Fertility & Sexual Health</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-600 text-sm leading-relaxed">Discreet, compassionate care for erectile dysfunction, male infertility, and varicocele with proven treatment outcomes.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-teal-600 font-semibold text-sm mt-4 hover:gap-2 transition-all">Learn More <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="service-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md fade-up" style="animation-delay:0.4s">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=600&q=80" alt="Laparoscopic Surgery" class="w-full h-full object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent flex items-end p-5">
+            <span class="text-white font-display font-bold text-xl">Laparoscopic Surgery</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-600 text-sm leading-relaxed">Minimally invasive keyhole surgery for nephrectomy, pyeloplasty, and cystectomy, reducing hospital stay and scarring.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-teal-600 font-semibold text-sm mt-4 hover:gap-2 transition-all">Learn More <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="service-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md fade-up" style="animation-delay:0.5s">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1504813184591-01572f98c85f?w=600&q=80" alt="Paediatric Urology" class="w-full h-full object-cover"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent flex items-end p-5">
+            <span class="text-white font-display font-bold text-xl">Paediatric Urology</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <p class="text-gray-600 text-sm leading-relaxed">Gentle, child friendly urological care for hypospadias, undescended testes, hydronephrosis, and urinary tract infections.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-teal-600 font-semibold text-sm mt-4 hover:gap-2 transition-all">Learn More <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     WHY CHOOSE US
+============================================================ -->
+<section id="why-us" class="bg-dark-gradient py-24 relative overflow-hidden">
+  <!-- Decorative -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-teal-400/5 rounded-full translate-x-1/3 -translate-y-1/3"></div>
+  <div class="absolute bottom-0 left-0 w-72 h-72 bg-teal-600/10 rounded-full -translate-x-1/2 translate-y-1/2"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 fade-up">
+      <span class="inline-block text-teal-400 font-semibold text-sm tracking-widest uppercase mb-3">Why Patients Choose Us</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-white">The <span class="text-teal-300">Oga Urology</span> Difference</h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7 fade-up hover:bg-white/10 transition">
+        <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white mb-3">Board Certified Specialists</h3>
+        <p class="text-white/60 text-sm leading-relaxed">Every surgeon holds international fellowship credentials from leading institutions in the UK, USA, and Europe.</p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7 fade-up hover:bg-white/10 transition" style="animation-delay:0.1s">
+        <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white mb-3">State of the Art Technology</h3>
+        <p class="text-white/60 text-sm leading-relaxed">Our facility features robotic assisted surgery systems, 3D laparoscopy, digital urodynamics, and advanced endoscopy suites.</p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7 fade-up hover:bg-white/10 transition" style="animation-delay:0.2s">
+        <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white mb-3">Patient Centred Care</h3>
+        <p class="text-white/60 text-sm leading-relaxed">From first consultation to post surgical follow up, every step is designed around your comfort, dignity, and recovery.</p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7 fade-up hover:bg-white/10 transition" style="animation-delay:0.3s">
+        <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white mb-3">Fast Track Appointments</h3>
+        <p class="text-white/60 text-sm leading-relaxed">Same day and next day consultation slots available. No long waiting lists - your health cannot wait.</p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7 fade-up hover:bg-white/10 transition" style="animation-delay:0.4s">
+        <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white mb-3">Insurance & NHIS Accepted</h3>
+        <p class="text-white/60 text-sm leading-relaxed">We partner with all major HMOs and the National Health Insurance Scheme, making quality care accessible and affordable.</p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-7 fade-up hover:bg-white/10 transition" style="animation-delay:0.5s">
+        <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white mb-3">24/7 Emergency Line</h3>
+        <p class="text-white/60 text-sm leading-relaxed">Our specialist helpline is always open. Whether it's acute retention or haematuria, expert guidance is a call away.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DOCTORS
+============================================================ -->
+<section id="doctors" class="bg-white py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 fade-up">
+      <span class="inline-block text-teal-600 font-semibold text-sm tracking-widest uppercase mb-3">Our Team</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900">Meet Our <span class="gradient-text">Expert</span> Doctors</h2>
+      <p class="text-gray-500 mt-4 max-w-xl mx-auto text-base">Fellowship trained, internationally recognised, and dedicated to your urological health.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Doctor cards -->
+      <div class="doctor-card relative rounded-2xl overflow-hidden shadow-md group cursor-pointer fade-up">
+        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80" alt="Dr. Emeka Okafor" class="w-full h-72 object-cover object-top"/>
+        <div class="doctor-overlay absolute inset-0 bg-gradient-to-t from-teal-900/90 via-teal-900/40 to-transparent flex flex-col justify-end p-5">
+          <p class="text-teal-300 text-xs font-semibold mb-1">Consultant Urologist</p>
+          <h3 class="font-display text-white text-xl font-bold">Dr. Emeka Okafor</h3>
+          <p class="text-white/70 text-xs mt-1">MBBS, FWACS, FRCSEd (Urol)</p>
+        </div>
+        <div class="bg-gray-50 p-4 flex flex-col">
+          <h3 class="font-semibold text-gray-900 text-base">Dr. Emeka Okafor</h3>
+          <p class="text-teal-600 text-xs font-medium">Prostate & Oncological Urology</p>
+        </div>
+      </div>
+
+      <div class="doctor-card relative rounded-2xl overflow-hidden shadow-md group cursor-pointer fade-up" style="animation-delay:0.1s">
+        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" alt="Dr. Ngozi Adeyemi" class="w-full h-72 object-cover object-top"/>
+        <div class="doctor-overlay absolute inset-0 bg-gradient-to-t from-teal-900/90 via-teal-900/40 to-transparent flex flex-col justify-end p-5">
+          <p class="text-teal-300 text-xs font-semibold mb-1">Consultant Urologist</p>
+          <h3 class="font-display text-white text-xl font-bold">Dr. Ngozi Adeyemi</h3>
+          <p class="text-white/70 text-xs mt-1">MBBS, FMCS (Urol), MPhil</p>
+        </div>
+        <div class="bg-gray-50 p-4 flex flex-col">
+          <h3 class="font-semibold text-gray-900 text-base">Dr. Ngozi Adeyemi</h3>
+          <p class="text-teal-600 text-xs font-medium">Female & Functional Urology</p>
+        </div>
+      </div>
+
+      <div class="doctor-card relative rounded-2xl overflow-hidden shadow-md group cursor-pointer fade-up" style="animation-delay:0.2s">
+        <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&q=80" alt="Dr. Chidi Nwachukwu" class="w-full h-72 object-cover object-top"/>
+        <div class="doctor-overlay absolute inset-0 bg-gradient-to-t from-teal-900/90 via-teal-900/40 to-transparent flex flex-col justify-end p-5">
+          <p class="text-teal-300 text-xs font-semibold mb-1">Senior Registrar</p>
+          <h3 class="font-display text-white text-xl font-bold">Dr. Chidi Nwachukwu</h3>
+          <p class="text-white/70 text-xs mt-1">MBBS, FWACS</p>
+        </div>
+        <div class="bg-gray-50 p-4 flex flex-col">
+          <h3 class="font-semibold text-gray-900 text-base">Dr. Chidi Nwachukwu</h3>
+          <p class="text-teal-600 text-xs font-medium">Endourology & Stone Disease</p>
+        </div>
+      </div>
+
+      <div class="doctor-card relative rounded-2xl overflow-hidden shadow-md group cursor-pointer fade-up" style="animation-delay:0.3s">
+        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80" alt="Dr. Aminu Suleiman" class="w-full h-72 object-cover object-top"/>
+        <div class="doctor-overlay absolute inset-0 bg-gradient-to-t from-teal-900/90 via-teal-900/40 to-transparent flex flex-col justify-end p-5">
+          <p class="text-teal-300 text-xs font-semibold mb-1">Consultant Urologist</p>
+          <h3 class="font-display text-white text-xl font-bold">Dr. Aminu Suleiman</h3>
+          <p class="text-white/70 text-xs mt-1">MBBS, FMCS, FECSM</p>
+        </div>
+        <div class="bg-gray-50 p-4 flex flex-col">
+          <h3 class="font-semibold text-gray-900 text-base">Dr. Aminu Suleiman</h3>
+          <p class="text-teal-600 text-xs font-medium">Andrology & Male Fertility</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     TESTIMONIALS
+============================================================ -->
+<section id="testimonials" class="bg-light-gradient py-24 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 fade-up">
+      <span class="inline-block text-teal-600 font-semibold text-sm tracking-widest uppercase mb-3">Patient Stories</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900">What Our <span class="gradient-text">Patients</span> Say</h2>
+    </div>
+  </div>
+
+  <!-- Scrolling testimonials -->
+  <div class="relative">
+    <div style="overflow:hidden">
+      <div class="testimonial-track py-4">
+        <!-- Duplicated for infinite loop -->
+        <div class="flex gap-6" id="track-inner">
+          <!-- Testimonial -->
+          <div class="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-md border border-teal-50">
+            <div class="flex gap-1 mb-3">
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">"Dr. Okafor performed my prostate surgery with exceptional skill. I was discharged in two days and back to normal life in two weeks. This team truly cares."</p>
+            <div class="flex items-center gap-3">
+              <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Mr. Babatunde A." class="w-10 h-10 rounded-full object-cover"/>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">Mr. Babatunde A.</p>
+                <p class="text-gray-400 text-xs">Lagos, Nigeria</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-md border border-teal-50">
+            <div class="flex gap-1 mb-3">
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">"The kidney stone procedure was painless and I was up walking within hours. The nurses and consultants were incredibly professional and reassuring throughout."</p>
+            <div class="flex items-center gap-3">
+              <img src="https://randomuser.me/api/portraits/women/62.jpg" alt="Mrs. Chioma E." class="w-10 h-10 rounded-full object-cover"/>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">Mrs. Chioma E.</p>
+                <p class="text-gray-400 text-xs">Port Harcourt, Nigeria</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-md border border-teal-50">
+            <div class="flex gap-1 mb-3">
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">"Finding out I had bladder cancer was frightening. But the team at Oga Urology walked me through every step. I'm now 2 years cancer-free. Forever grateful."</p>
+            <div class="flex items-center gap-3">
+              <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Mr. Yusuf M." class="w-10 h-10 rounded-full object-cover"/>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">Mr. Yusuf M.</p>
+                <p class="text-gray-400 text-xs">Abuja, Nigeria</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-md border border-teal-50">
+            <div class="flex gap-1 mb-3">
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">"I travelled from Kano because my nephew recommended Oga Urology. After just one visit and a minor procedure, my quality of life completely changed. Highly recommended."</p>
+            <div class="flex items-center gap-3">
+              <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="Alhaji Usman K." class="w-10 h-10 rounded-full object-cover"/>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">Alhaji Usman K.</p>
+                <p class="text-gray-400 text-xs">Kano, Nigeria</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duplicate for loop -->
+          <div class="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-md border border-teal-50">
+            <div class="flex gap-1 mb-3">
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">"My son's hypospadias repair was handled so gently and professionally. The paediatric urology team was amazing. He has healed perfectly with no complications."</p>
+            <div class="flex items-center gap-3">
+              <img src="https://randomuser.me/api/portraits/women/41.jpg" alt="Mrs. Folake T." class="w-10 h-10 rounded-full object-cover"/>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">Mrs. Folake T.</p>
+                <p class="text-gray-400 text-xs">Ibadan, Nigeria</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2nd set duplicate for seamless loop -->
+          <div class="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-md border border-teal-50">
+            <div class="flex gap-1 mb-3"><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg></div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">"Dr. Okafor performed my prostate surgery with exceptional skill. I was discharged in two days and back to normal life in two weeks. This team truly cares."</p>
+            <div class="flex items-center gap-3"><img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Mr. Babatunde A." class="w-10 h-10 rounded-full object-cover"/><div><p class="font-semibold text-gray-900 text-sm">Mr. Babatunde A.</p><p class="text-gray-400 text-xs">Lagos, Nigeria</p></div></div>
+          </div>
+          <div class="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-md border border-teal-50">
+            <div class="flex gap-1 mb-3"><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg></div>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">"The kidney stone procedure was painless and I was up walking within hours. The nurses and consultants were incredibly professional and reassuring throughout."</p>
+            <div class="flex items-center gap-3"><img src="https://randomuser.me/api/portraits/women/62.jpg" alt="Mrs. Chioma E." class="w-10 h-10 rounded-full object-cover"/><div><p class="font-semibold text-gray-900 text-sm">Mrs. Chioma E.</p><p class="text-gray-400 text-xs">Port Harcourt, Nigeria</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA BANNER
+============================================================ -->
+<section class="relative py-24 bg-hero-gradient overflow-hidden">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/4"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4"></div>
+  </div>
+  <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <span class="inline-block text-teal-200 font-semibold text-sm tracking-widest uppercase mb-4">Take Control of Your Health</span>
+    <h2 class="font-display text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Don't Wait - Your Urological Health Matters Today</h2>
+    <p class="text-white/70 text-lg mb-10 max-w-2xl mx-auto">Early diagnosis saves lives. Book a confidential consultation with our specialist team and take the first step towards better urological health.</p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="#appointment" class="inline-flex items-center gap-2 bg-white text-teal-700 font-bold px-8 py-4 rounded-full hover:bg-teal-50 transition shadow-xl text-sm">
+        Book Appointment
+      </a>
+      <a href="tel:+2348000000000" class="inline-flex items-center gap-2 border-2 border-white/50 text-white font-semibold px-8 py-4 rounded-full hover:border-white transition text-sm">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        Call Us Now
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FAQ
+============================================================ -->
+<section id="faq" class="bg-white py-24">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 fade-up">
+      <span class="inline-block text-teal-600 font-semibold text-sm tracking-widest uppercase mb-3">Questions & Answers</span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900">Frequently Asked <span class="gradient-text">Questions</span></h2>
+    </div>
+
+    <div class="space-y-4">
+      <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition">
+          <span class="font-semibold text-gray-900 text-base">What conditions does Ogah Urology treat?</span>
+          <svg class="faq-icon w-5 h-5 text-teal-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-gray-600 text-sm leading-relaxed pb-6">We treat a comprehensive range of urological conditions including prostate disorders (BPH, cancer, prostatitis), kidney stones, bladder diseases, urinary incontinence, male infertility, erectile dysfunction, UTIs, and paediatric urological conditions. Our team handles both medical management and surgical intervention.</p>
+        </div>
+      </div>
+
+      <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition">
+          <span class="font-semibold text-gray-900 text-base">Do I need a referral to see a urologist?</span>
+          <svg class="faq-icon w-5 h-5 text-teal-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-gray-600 text-sm leading-relaxed pb-6">No referral is required. You can book a self-referral consultation directly through our website, phone line, or reception desk. However, if you have a referral letter from your GP or family physician, please bring it along as it helps provide valuable background information.</p>
+        </div>
+      </div>
+
+      <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition">
+          <span class="font-semibold text-gray-900 text-base">How long does a typical consultation take?</span>
+          <svg class="faq-icon w-5 h-5 text-teal-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-gray-600 text-sm leading-relaxed pb-6">An initial consultation typically lasts 30–45 minutes. This includes a full history review, physical examination, and discussion of any preliminary tests or imaging. Follow up appointments are usually 15–30 minutes depending on the complexity of your case.</p>
+        </div>
+      </div>
+
+      <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition">
+          <span class="font-semibold text-gray-900 text-base">Is my treatment covered by HMO or NHIS?</span>
+          <svg class="faq-icon w-5 h-5 text-teal-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-gray-600 text-sm leading-relaxed pb-6">Yes. We are accredited by the National Health Insurance Scheme (NHIS) and partner with most major HMOs in Nigeria including Hygeia, AXA Mansard, Leadway Health, and more. Please contact our billing office to verify your specific plan coverage before your appointment.</p>
+        </div>
+      </div>
+
+      <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition">
+          <span class="font-semibold text-gray-900 text-base">Are your procedures minimally invasive?</span>
+          <svg class="faq-icon w-5 h-5 text-teal-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        </button>
+        <div class="faq-answer px-6">
+          <p class="text-gray-600 text-sm leading-relaxed pb-6">Where clinically appropriate, we always favour minimally invasive approaches — laparoscopic, endoscopic, and robotic assisted techniques - to reduce surgical trauma, minimise scarring, shorten hospital stay, and speed up your recovery. Our surgeons are highly trained in these advanced methods.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     APPOINTMENT FORM
+============================================================ -->
+<section id="appointment" class="bg-section-gradient py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+      <!-- Left info -->
+      <div class="fade-up">
+        <span class="inline-block text-teal-600 font-semibold text-sm tracking-widest uppercase mb-3">Book Now</span>
+        <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Schedule Your <span class="gradient-text">Consultation</span></h2>
+        <p class="text-gray-600 leading-relaxed mb-10">Our friendly team will confirm your appointment within 2 hours during working hours. Same day and next day slots are often available.</p>
+
+        <!-- Contact info -->
+        <div class="space-y-5">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-hero-gradient flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-gray-900 text-sm">Address</p>
+              <p class="text-gray-600 text-sm">3 Gabriel Ogah Crescent, Ulumhoghie Qtrs, Fugar 312109, Edo</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-hero-gradient flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-gray-900 text-sm">Phone</p>
+              <p class="text-gray-600 text-sm">+2348022240732  |  +2348022240732</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-hero-gradient flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-gray-900 text-sm">Email</p>
+              <p class="text-gray-600 text-sm"> info@ogahurology.com</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-hero-gradient flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <p class="font-semibold text-gray-900 text-sm">Working Hours</p>
+              <p class="text-gray-600 text-sm">Mon–Fri: 9am–8pm  |  Sat: 9am–6pm</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hospital image -->
+        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=700&q=80" alt="Oga Urology Hospital Building" class="rounded-2xl mt-10 w-full h-48 object-cover shadow-md"/>
+      </div>
+
+      <!-- Form -->
+      <div class="bg-white rounded-3xl shadow-xl p-8 fade-up">
+        <h3 class="font-display text-2xl font-bold text-gray-900 mb-6">Request an Appointment</h3>
+        <div class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1.5">First Name</label>
+              <input type="text" placeholder="John" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm transition"/>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1.5">Last Name</label>
+              <input type="text" placeholder="Okafor" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm transition"/>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email Address</label>
+            <input type="email" placeholder="john@example.com" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm transition"/>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Phone Number</label>
+            <input type="tel" placeholder="+234 800 000 0000" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm transition"/>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Service / Concern</label>
+            <select class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 transition bg-white">
+              <option value="">Select a service</option>
+              <option>Prostate Care</option>
+              <option>Kidney Stone Treatment</option>
+              <option>Bladder Disorders</option>
+              <option>Male Fertility & Sexual Health</option>
+              <option>Laparoscopic Surgery</option>
+              <option>Paediatric Urology</option>
+              <option>General Urological Consultation</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Preferred Date</label>
+            <input type="date" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm transition"/>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Brief description of your symptoms (optional)</label>
+            <textarea rows="3" placeholder="Describe your concern..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm transition resize-none"></textarea>
+          </div>
+          <button onclick="handleSubmit()" class="w-full bg-hero-gradient text-white font-bold py-4 rounded-xl hover:opacity-90 transition shadow-lg text-sm">
+            Request Appointment
+          </button>
+          <p class="text-center text-gray-400 text-xs">Your information is kept strictly confidential</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CONTACT / MAP PLACEHOLDER
+============================================================ -->
+<section id="contact" class="bg-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="rounded-3xl overflow-hidden shadow-lg h-72 relative bg-teal-50 border border-teal-100">
+      <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1400&q=80" alt="Lagos Map View" class="w-full h-full object-cover opacity-60"/>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="bg-white rounded-2xl px-8 py-5 shadow-xl text-center">
+          <div class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center mx-auto mb-2">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <p class="font-display font-bold text-gray-900">Ogah Urology Hospital</p>
+          <p class="text-gray-500 text-sm">3 Gabriel Ogah Crescent, Ulumhoghie Qtrs, Fugar 312109, Edo</p>
+          <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-1 text-teal-600 font-semibold text-sm mt-2 hover:underline">Get Directions →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="bg-dark-gradient text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-12 h-12 p-2 rounded-full bg-teal-400 flex items-center justify-center">
+            <img src="assest/Ogahlogo.png" alt="icon">
+          </div>
+          <span class="font-display font-bold text-xl">Oga<span class="text-teal-300">Urology</span></span>
+        </div>
+        <p class="text-white/60 text-sm leading-relaxed mb-5">Nigeria's premier centre for advanced urological care, combining specialist expertise with compassionate, patient centred medicine.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-teal-500 flex items-center justify-center transition"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-teal-500 flex items-center justify-center transition"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-teal-500 flex items-center justify-center transition"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div>
+        <h4 class="font-display font-bold text-white text-lg mb-5">Quick Links</h4>
+        <ul class="space-y-3">
+          <li><a href="#about"        class="text-white/60 hover:text-teal-300 text-sm transition">About Us</a></li>
+          <li><a href="#services"     class="text-white/60 hover:text-teal-300 text-sm transition">Our Services</a></li>
+          <li><a href="#doctors"      class="text-white/60 hover:text-teal-300 text-sm transition">Our Doctors</a></li>
+          <li><a href="#testimonials" class="text-white/60 hover:text-teal-300 text-sm transition">Patient Stories</a></li>
+          <li><a href="#faq"          class="text-white/60 hover:text-teal-300 text-sm transition">FAQs</a></li>
+          <li><a href="#appointment"  class="text-white/60 hover:text-teal-300 text-sm transition">Book Appointment</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h4 class="font-display font-bold text-white text-lg mb-5">Services</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-white/60 hover:text-teal-300 text-sm transition">Prostate Care</a></li>
+          <li><a href="#" class="text-white/60 hover:text-teal-300 text-sm transition">Kidney Stone Treatment</a></li>
+          <li><a href="#" class="text-white/60 hover:text-teal-300 text-sm transition">Bladder Disorders</a></li>
+          <li><a href="#" class="text-white/60 hover:text-teal-300 text-sm transition">Male Fertility</a></li>
+          <li><a href="#" class="text-white/60 hover:text-teal-300 text-sm transition">Laparoscopic Surgery</a></li>
+          <li><a href="#" class="text-white/60 hover:text-teal-300 text-sm transition">Paediatric Urology</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h4 class="font-display font-bold text-white text-lg mb-5">Contact</h4>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="text-white/60 text-sm">3 Gabriel Ogah Crescent, Ulumhoghie Qtrs, Fugar 312109, Edo</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-teal-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            <span class="text-white/60 text-sm">+2348022240732</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-teal-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span class="text-white/60 text-sm"> info@ogahurology.com</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-white/40 text-xs">© 2026 Ogah Urology Hospital. All rights reserved.</p>
+      <div class="flex gap-6">
+        <a href="#" class="text-white/40 hover:text-teal-300 text-xs transition">Privacy Policy</a>
+        <a href="#" class="text-white/40 hover:text-teal-300 text-xs transition">Terms of Service</a>
+        <a href="#" class="text-white/40 hover:text-teal-300 text-xs transition">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     JS
+============================================================ -->
+<script>
+  // ---- Navbar scroll effect ----
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+  if (window.scrollY > 40) {
+    navbar.classList.add('scrolled');
+  } else {
+    if (!menuOpen) {
+      navbar.classList.remove('scrolled');
+    }
+  }
+});
+
+  // ---- Mobile menu ----
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamIcon    = document.getElementById('ham-icon');
+  const closeIcon  = document.getElementById('close-icon');
+  let menuOpen = false;
+
+  hamburger.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+
+  mobileMenu.classList.toggle('open', menuOpen);
+  hamIcon.classList.toggle('hidden', menuOpen);
+  closeIcon.classList.toggle('hidden', !menuOpen);
+
+  if (menuOpen) {
+    navbar.classList.add('scrolled');
+  } else {
+    if (window.scrollY < 40) {
+      navbar.classList.remove('scrolled');
+    }
+  }
+});
+
+ function closeMenu() {
+  menuOpen = false;
+  mobileMenu.classList.remove('open');
+  hamIcon.classList.remove('hidden');
+  closeIcon.classList.add('hidden');
+
+  if (window.scrollY < 40) {
+    navbar.classList.remove('scrolled');
+  }
+}
+
+  // ---- Scroll-triggered fade-up ----
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ---- FAQ accordion ----
+  document.querySelectorAll('.faq-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item   = btn.closest('.faq-item');
+      const answer = item.querySelector('.faq-answer');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-answer').classList.remove('open');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        answer.classList.add('open');
+      }
+    });
+  });
+
+  // ---- Form submit ----
+  function handleSubmit() {
+    const btn = event.currentTarget;
+    btn.textContent = '✓ Request Submitted!';
+    btn.style.background = '#047481';
+    setTimeout(() => {
+      btn.textContent = 'Request Appointment';
+      btn.style.background = '';
+    }, 3000);
+  }
+</script>
+</body>
+</html>
